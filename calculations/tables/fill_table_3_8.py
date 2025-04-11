@@ -20,4 +20,4 @@ def fill_3_8_table(number, izav_type, izav_amount, izav_speed, fuel_type, work_t
     table.add_row()
     table.cell(4,0).merge(table.cell(4,10))
     table.cell(4,0).text = """Примечание. Список использованных расчетных методик: 0001 - Методика проведения инвентаризации выбросов ЗВ в атмосферу для автотранспортных предприя-тий". - М., НИИАТ, 1998г. с учётом "Дополнений к методике" ( М., НИИАТ, 1999г.) и Методики…для баз дорожной техники". - М., НИИАТ, 1999г """
-    doc.save("calculations/tables/razdel3/test_3_8.docx")    
+    doc.save("calculations/tables/razdel3/3_8.docx")    

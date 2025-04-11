@@ -78,7 +78,7 @@ if st.button("Сохранить таблицу в Word"):
             row_cells[i].text = str(row[col] if pd.notna(row[col]) else "")
     
     # Сохраняем документ
-    doc.save("calculations/tables/razdel3/test_3_2.docx")
+    doc.save("calculations/tables/razdel3/3_2.docx")
     st.success("Таблица успешно сохранена в файл emission_sources_table.docx")
 
 # Дополнительные элементы интерфейса

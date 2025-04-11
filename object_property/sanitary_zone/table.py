@@ -37,4 +37,4 @@ for row in table.rows:
                 run.font.size = Pt(10)
 
 # Сохраняем документ
-doc.save("sanitary_zone/table_fixed.docx")
+doc.save("sanitary_zone/sanpin_table.docx")

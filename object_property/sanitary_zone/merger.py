@@ -12,5 +12,5 @@ def merge_docx(files, output_file):
     print(f"Documents merged successfully into {output_file}")
 
 # Example usage
-files_to_merge = ["izav_info/Источники_выбросов.docx", "calculations/zv_info.docx"]
-merge_docx(files_to_merge, "izav_info/2.docx")
+files_to_merge = ["sanitary_zone/description.docx", "sanitary_zone/sanpin_table.docx"]
+merge_docx(files_to_merge, "sanitary_zone/sanitary_zone.docx")

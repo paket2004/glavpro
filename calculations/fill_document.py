@@ -164,7 +164,7 @@ def fill_document_into_table(num_of_boilers, fuel_type, num_of_days_in_work, num
     table.cell(6,9).text = str(float( table.cell(4,2).text) - benzapiren_year)
     
 
-    doc.save("calculations/tables/razdel3/test_3_7.docx")
+    doc.save("calculations/tables/razdel3/3_7.docx")
 
 
 def generate_docx(num_of_boilers, fuel_type, num_of_days_in_work, num_of_hours_in_day_in_work, fuel_consumption_year, throughpout, tnp, txx1, txx2, L2_warmup, L1_warmup, ab, Nk, Dp, Tr, L1_warm, L2_warm, Nkv, Nkk, car, speed, num_of_days_in_work_car, num_of_hours_in_day_in_work_car, num_of_days_in_work_parking, num_of_hours_in_day_in_work_parking, num_of_parkings, num_of_days_in_work_candle, num_of_hours_in_day_in_work_candle, num_of_candles, car_amount):

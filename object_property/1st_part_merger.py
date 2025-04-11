@@ -21,11 +21,10 @@ def merge_docx(files, output_file):
 
 # Пример использования
 files_to_merge = [
-    "content/Содержание_отчета.docx",
-    "termins_and_short/dictionary_table.docx",
-    "introduction/introduction.docx",
-    "object_property/company_info/org_info.docx",
-    "object_property/sanitary_zone/sanitary_zone.docx",
-    "calculations/tables/razdel3/razdel3.docx"
+    "object_property/Содержание_отчета.docx",
+    "object_property/dictionary_table.docx",
+    "object_property/introduction.docx",
+    "object_property/..."
+    "object_property/sanitary_zone.docx"
 ]
 merge_docx(files_to_merge, "REPORT.docx")

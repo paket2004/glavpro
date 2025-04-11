@@ -58,15 +58,13 @@ if st.button("Сохранить таблицу и текст в Word"):
     # Создаём новый документ Word
     doc = Document()
     
-    # Добавляем заголовок
-    doc.add_heading("Таблица с направлениями", level=1)
     
     # Добавляем сформированный текст в документ (перед таблицей)
     doc.add_paragraph(text)
     
     # Создаём таблицу в Word
     table = doc.add_table(rows=1, cols=len(columns))
-    
+    table.style = 'Table Grid'
     # Добавляем заголовки столбцов
     hdr_cells = table.rows[0].cells
     for i, col in enumerate(columns):
@@ -95,5 +93,5 @@ if st.button("Сохранить таблицу и текст в Word"):
 """
     # Сохраняем документ
     doc.add_paragraph(text)
-    doc.save("sanitary_zone/table_and_text.docx")
+    doc.save("sanitary_zone/description.docx")
     st.success("Таблица и текст успешно сохранены в файл table_and_text.docx")

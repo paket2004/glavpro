@@ -1,16 +1,18 @@
 from docx import Document
 from docx.shared import Inches, Pt
-from docx.enum.section import WD_ORIENT, WD_SECTION
 from docx.oxml.ns import qn
-from docx.oxml import OxmlElement
-
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.shared import Pt, RGBColor
 # Создаем новый документ
 doc = Document()
 style = doc.styles['Normal']
 style.font.name = 'Times New Roman'
 style.font.size = Pt(8)
-doc.add_heading('Отчёт об инвентаризации выбросов', 0)
-
+heading = doc.add_heading(level=1)
+heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
+run = heading.add_run('''Таблица № 3.1. Источники выделения загрязняющих веществ''')
+run.font.color.rgb = RGBColor(0,0,0)
+run.font.size = Pt(14)
 # Change the page orientation to landscape
 section = doc.sections[0]
 section._sectPr.xpath('./w:pgSz')[0].set(qn('w:orient'), 'landscape')
@@ -70,14 +72,6 @@ table.cell(0, 17).merge(table.cell(2, 17))
 table.columns[0].width = Inches(1.5)
 table.columns[1].width = Inches(6)
 table.columns[6].width = Inches(1.5)
-# table.columns[3].width = Inches(1.5)
-# table.columns[4].width = Inches(6)
-
-# table.columns[5].width = Inches(1.5)
-# table.columns[6].width = Inches(6)
-# table.columns[7].width = Inches(1.5)
-# table.columns[8].width = Inches(6)
-
 
 for i, header in enumerate(headers):
     table.cell(0, i).text = header

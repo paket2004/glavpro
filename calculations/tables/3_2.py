@@ -3,15 +3,20 @@ from docx.shared import Inches, Pt
 from docx.enum.section import WD_ORIENT, WD_SECTION
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
-
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.shared import Pt, RGBColor
 # Создаем новый документ
 doc = Document()
 style = doc.styles['Normal']
 
 style.font.name = 'Times New Roman'  # Название шрифта
 style.font.size = Pt(6)  # Размер шрифта (12 пунктов)
-doc.add_heading('Стационарные источники выбросов загрязняющих веществ', 0)
 
+heading = doc.add_heading(level=1)
+heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
+run = heading.add_run('Стационарные источники выбросов загрязняющих веществ')
+run.font.color.rgb = RGBColor(0,0,0)
+run.font.size = Pt(14)
 # Change the page orientation to landscape
 section = doc.sections[0]
 section._sectPr.xpath('./w:pgSz')[0].set(qn('w:orient'), 'landscape')
@@ -90,4 +95,4 @@ for i, header in enumerate(headers):
     #     for col in range(18):
     #         table.cell(row, col).text = ""  # Оставляем ячейки пустыми
     # Сохраняем документ
-doc.save('vibrosi.docx')
+doc.save('calculations/tables/3_2.docx')

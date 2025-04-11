@@ -30,4 +30,4 @@ def fill_table_3_1(Mno_warm, SO_mik_warm, CO_mik_warm, petrol_mik_warm, Gno_warm
     table.cell(3,13).text = f"{mno2_t}\n\n{azot_2_oksid_year}\n\n{mco_year}\n\n{benzapiren_year}\n\n{methane_year}\n\n{etantiol_year}\n\n{Mno2_warm_up}\n\n{SO_mik}\n\n{CO_mik_warmup}\n\n{petrol_mik_warmup}\n\n{Mno2_warm}\n\n{Mno_warm}\n\n{SO_mik_warm}\n\n{CO_mik_warm}\n\n{petrol_mik_warm}"
     table.cell(3,14).text = f"{mno2_t}\n\n{azot_2_oksid_year}\n\n{mco_year}\n\n{benzapiren_year}\n\n{methane_year}\n\n{etantiol_year}\n\n{Mno2_warm_up}\n\n{SO_mik}\n\n{CO_mik_warmup}\n\n{petrol_mik_warmup}\n\n{Mno2_warm}\n\n{Mno_warm}\n\n{SO_mik_warm}\n\n{CO_mik_warm}\n\n{petrol_mik_warm}"
 
-    doc.save("calculations/tables/razdel3/test_3_1.docx")
+    doc.save("calculations/tables/razdel3/3_1.docx")

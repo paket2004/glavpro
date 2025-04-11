@@ -1,16 +1,22 @@
 from docx import Document
 from docx.shared import Inches, Pt
-from docx.enum.section import WD_ORIENT, WD_SECTION
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.shared import Pt, RGBColor
 # Создаем новый документ
 doc = Document()
 style = doc.styles['Normal']
 
 style.font.name = 'Times New Roman'  # Название шрифта
 style.font.size = Pt(6)  # Размер шрифта (12 пунктов)
-doc.add_heading('Результаты обследования установок очистки газа и условий их эксплуатации', 0)
+# doc.add_heading('Результаты обследования установок очистки газа и условий их эксплуатации', 0)
+heading = doc.add_heading(level=1)
+heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
+run = heading.add_run('Результаты обследования установок очистки газа и условий их эксплуатации')
+run.font.color.rgb = RGBColor(0,0,0)
+run.font.size = Pt(14)
+
 
 # Change the page orientation to landscape
 section = doc.sections[0]
@@ -61,4 +67,4 @@ cell.text = "Пылегазоочистное оборудование отсу�
 for paragraph in cell.paragraphs:
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-doc.save('calculations/tables/razdel3/3_6.docx')
+doc.save('calculations/tables/3_6.docx')
