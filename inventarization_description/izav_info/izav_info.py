@@ -48,7 +48,7 @@ for source in st.session_state.sources:
 
     if source_type == "Труба котельной":
         # Ввод данных для трубы котельной
-        source["data"][""] = st.text_input(f"Номер источника для источника №{source['id']}", f"ИЗАВ №{source['id']:04d} – Труба котельной")
+        source["data"]["Номер источника"] = st.text_input(f"Номер источника для источника №{source['id']}", f"ИЗАВ №{source['id']:04d} – Труба котельной")
         source["data"]["ИВ (001)"] = st.text_input("Название источника для заполнения ИВ", f"Котлы водогрейные КЧМ -5", key="my_unique_key1")
         source["data"]["Тип котла"] = st.text_input(f"Тип котла для источника №{source['id']}", "водогрейный КЧМ -5")
         source["data"]["Мощность котла"] = st.text_input(f"Мощность котла для источника №{source['id']}", "21 кВт")
@@ -65,7 +65,7 @@ for source in st.session_state.sources:
         source["data"]["Загрязняющие вещества"] = st.text_input(f"Загрязняющие вещества для источника №{source['id']}", f"{boiler_pipe}")
 
     elif source_type == "Продувочная свеча":
-        source["data"][""] = st.text_input(f"Номер источника для источника №{source['id']}", f"ИЗАВ №{source['id']:04d} – Продувочная свеча")
+        source["data"]["Номер источника"] = st.text_input(f"Номер источника для источника №{source['id']}", f"ИЗАВ №{source['id']:04d} – Продувочная свеча")
         source["data"]["ИВ (001)"] = st.text_input("Название источника", f"Продувочная свеча", key="my_unique_key2")
         source["data"]["Время работы"] = st.text_input(f"Время работы для источника №{source['id']}", "1,5 час/день, 1 дней/год")
         source["data"]["Длина продуваемого трубопровода"] = st.text_input(f"Длина продуваемого трубопровода для источника №{source['id']}", "5 м")
@@ -75,7 +75,7 @@ for source in st.session_state.sources:
         source["data"]["Загрязняющие вещества"] = st.text_input(f"Загрязняющие вещества для источника №{source['id']}", f"{blow_off_plug}")
 
     elif source_type == "Открытая стоянка":
-        source["data"][""] = st.text_input(f"Номер источника для источника №{source['id']}", f"ИЗАВ №{source['id']:04d} – Открытая стоянка")
+        source["data"]["Номер источника"] = st.text_input(f"Номер источника для источника №{source['id']}", f"ИЗАВ №{source['id']:04d} – Открытая стоянка")
         source["data"]["ИВ (001)"] = st.text_input("Название", f"Открытая стоянка", key="my_unique_key3")
         source["data"]["Размеры стоянки"] = st.text_input(f"Размеры стоянки для источника №{source['id']}", "3 х 8 м")
         source["data"]["Марка оборудования"] = st.text_input(f"Марка оборудования для источника №{source['id']}", "ГАЗ 322171")
@@ -104,25 +104,35 @@ st.subheader("Введённая информация об источниках"
 for source in st.session_state.sources:
     for key, value in source["data"].items():
         st.write(f"**{key}:** {value}")
+
 def generate_docx(organization_info, sources):
     doc = Document()
-    heading = doc.add_heading("Информация об организации и источниках выбросов", level=1)
+    # style = doc.styles['Normal']
+    # style.paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+
+    heading = doc.add_heading("1.2 Сведения о производственной деятельности, количестве, характеристиках и эффективности ГОУ", level=1)
     heading.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
     run = heading.runs[0]
     run.font.color.rgb = RGBColor(0, 0, 0)
 
-    # Добавление информации об организации
-    doc.add_heading("Информация об организации", level=2)
     for key, value in organization_info.items():
-        doc.add_paragraph(f"{key}: {value}")
+        # doc.add_paragraph(f"{key}: {value}")
+        p = doc.add_paragraph()
+        p.add_run(f"{key}: {value}").bold = False   
 
     # Добавление информации об источниках
     for source in sources:
-        doc.add_heading(f"Источник №{source['id']} ({source['data'].get('Номер источника', '')})", level=3)
-        
+        heading = doc.add_heading(f"ИЗАВ №{source['id']} ({source['data'].get('Номер источника', '')})", level=3)
+        heading.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+        run = heading.runs[0]
+        run.font.color.rgb = RGBColor(0, 0, 0)
+        print(source)
         # Если источник - "Открытая стоянка", добавляем текст перед таблицей
         if "Открытая стоянка" == source['data'].get('ИВ (001)', ''):
-            doc.add_paragraph(f"ИВ (001): {source['data'].get('ИВ (001)', '')}")
+            par = doc.add_paragraph(f"ИВ (001): {source['data'].get('ИВ (001)', '')}")
+            par.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+            run = par.runs[0]
+            run.font.color.rgb = RGBColor(0, 0, 0)
             doc.add_paragraph(f"Размеры стоянки: {source['data'].get('Размеры стоянки', '')}")
 
             # Создаем таблицу для открытой стоянки
@@ -143,10 +153,13 @@ def generate_docx(organization_info, sources):
 
         # Добавляем остальные данные источника
         for key, value in source["data"].items():
-            if key not in ["Марка оборудования", "Количество ТС", "Тип ТС", "Время работы", "Вид топлива", "ИВ (001)", "Размеры стоянки"]:
+            if key == "ИВ (001)":
+                par = doc.add_paragraph(f"{key}: {value}")
+                par.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+            elif key not in ["Марка оборудования", "Количество ТС", "Тип ТС", "Время работы", "Вид топлива", "Размеры стоянки", "Номер источника"]:
                 doc.add_paragraph(f"{key}: {value}")
 
-    file_path = "izav_info/organization_sources_info.docx"
+    file_path = "inventarization_description\izav_info\organization_sources_info.docx"
     doc.save(file_path)
     return file_path
 # Кнопка для сохранения в DOCX
