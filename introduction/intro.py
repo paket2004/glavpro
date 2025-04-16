@@ -7,7 +7,7 @@ def generate_introduction(organization_name: str):
     doc = Document()
 
     # Добавляем заголовок
-    heading = doc.add_heading('ВВЕДЕНИЕ', level=1)
+    heading = doc.add_heading('В В Е Д Е Н И Е', level=1)
     # Center align the heading
     heading.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 

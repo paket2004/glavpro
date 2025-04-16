@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 from docx import Document
 from docx.shared import Inches
-
+from docx.shared import Inches, Pt, RGBColor
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 # Заголовок приложения
 st.title("Редактируемая таблица с направлениями")
 
@@ -12,7 +13,7 @@ columns = ["Направление", "Расстояние, м", "Адрес", "
 # Инициализация DataFrame с заполненной колонкой "Направление"
 if 'df' not in st.session_state:
     # Создаём DataFrame с колонкой "Направление", заполненной сторонами света
-    directions = ["Север", "Юг", "Запад", "Восток", "Северо-запад", "Северо-восток", "Юго-запад", "Юго-восток"]
+    directions = ["Север", "Северо-восток", "Восток", "Юго-восток", "Юг", "Юго-запад", "Запад", "Северо-запад"]
     data = {
         "Направление": directions,
         "Расстояние, м": [""] * len(directions),
@@ -60,6 +61,16 @@ if st.button("Сохранить таблицу и текст в Word"):
     
     
     # Добавляем сформированный текст в документ (перед таблицей)
+    heading = doc.add_heading("1.2.2 Описание санитарно-защитной зоны", level=1)
+    heading.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+
+    # Set the font color to black
+    run = heading.runs[0]
+    run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
+
+    style = doc.styles['Normal']
+    style.font.name = 'Times New Roman'  # Название шрифта
+    style.font.size = Pt(14)
     doc.add_paragraph(text)
     
     # Создаём таблицу в Word
@@ -93,5 +104,5 @@ if st.button("Сохранить таблицу и текст в Word"):
 """
     # Сохраняем документ
     doc.add_paragraph(text)
-    doc.save("sanitary_zone/description.docx")
+    doc.save("object_property\sanitary_zone\description.docx")
     st.success("Таблица и текст успешно сохранены в файл table_and_text.docx")
