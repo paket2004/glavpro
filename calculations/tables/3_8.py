@@ -13,7 +13,8 @@ heading = doc.add_heading(level=1)
 heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
 run = heading.add_run('Таблица № 3.8 Выбросы от передвижных ИЗАВ на 2024 год')
 run.font.color.rgb = RGBColor(0,0,0)
-run.font.size = Pt(14)
+run.font.name = 'Times New Roman'  # This is the key line you're missing
+run.font.size = Pt(8)
 
 
 # Change the page orientation to landscape

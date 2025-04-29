@@ -1,22 +1,24 @@
 from docx import Document
 from docx.shared import Inches, Pt
-from docx.oxml.ns import qn
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt, RGBColor
+from docx.enum.section import WD_ORIENT
+
 # Создаем новый документ
 doc = Document()
 style = doc.styles['Normal']
 style.font.name = 'Times New Roman'
-style.font.size = Pt(8)
+style.font.size = Pt(5)
 heading = doc.add_heading(level=1)
 heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
 run = heading.add_run('''Таблица № 3.1. Источники выделения загрязняющих веществ''')
+run.font.name = 'Times New Roman'  # This is the key line you're missing
+run.font.size = Pt(8)
 run.font.color.rgb = RGBColor(0,0,0)
-run.font.size = Pt(14)
+
 # Change the page orientation to landscape
 section = doc.sections[0]
-section._sectPr.xpath('./w:pgSz')[0].set(qn('w:orient'), 'landscape')
-
+section.orientation = WD_ORIENT.LANDSCAPE
 # Adjust page width and height for landscape orientation
 section.page_width = Inches(11)  # Landscape width (11 inches)
 section.page_height = Inches(8.5)  # Landscape height (8.5 inches)
@@ -69,8 +71,8 @@ table.cell(0, 16).merge(table.cell(2, 16))
 table.cell(0, 17).merge(table.cell(2, 17))
 
 
-table.columns[0].width = Inches(1.5)
-table.columns[1].width = Inches(6)
+# table.columns[0].width = Inches(1.5)
+# table.columns[1].width = Inches(6)
 table.columns[6].width = Inches(1.5)
 
 for i, header in enumerate(headers):

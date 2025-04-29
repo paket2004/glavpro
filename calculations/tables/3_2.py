@@ -16,11 +16,11 @@ heading = doc.add_heading(level=1)
 heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
 run = heading.add_run('Стационарные источники выбросов загрязняющих веществ')
 run.font.color.rgb = RGBColor(0,0,0)
-run.font.size = Pt(14)
+run.font.name = 'Times New Roman'  # This is the key line you're missing
+run.font.size = Pt(8)
 # Change the page orientation to landscape
 section = doc.sections[0]
-section._sectPr.xpath('./w:pgSz')[0].set(qn('w:orient'), 'landscape')
-
+section.orientation = WD_ORIENT.LANDSCAPE
 # Adjust page width and height for landscape orientation
 section.page_width = Inches(11)  # Landscape width (11 inches)
 section.page_height = Inches(8.5)  # Landscape height (8.5 inches)

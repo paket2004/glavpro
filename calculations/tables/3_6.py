@@ -6,16 +6,25 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt, RGBColor
 # Создаем новый документ
 doc = Document()
+# style = doc.styles['Normal']
 style = doc.styles['Normal']
-
-style.font.name = 'Times New Roman'  # Название шрифта
-style.font.size = Pt(6)  # Размер шрифта (12 пунктов)
-# doc.add_heading('Результаты обследования установок очистки газа и условий их эксплуатации', 0)
+style.font.name = 'Times New Roman'
+style.font.size = Pt(5)
 heading = doc.add_heading(level=1)
 heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
-run = heading.add_run('Результаты обследования установок очистки газа и условий их эксплуатации')
+run = heading.add_run('''Результаты обследования установок очистки газа и условий их эксплуатации''')
+run.font.name = 'Times New Roman'  # This is the key line you're missing
+run.font.size = Pt(8)
 run.font.color.rgb = RGBColor(0,0,0)
-run.font.size = Pt(14)
+# style.font.name = 'Times New Roman'  # Название шрифта
+# style.font.size = Pt(6)  # Размер шрифта (12 пунктов)
+# # doc.add_heading('Результаты обследования установок очистки газа и условий их эксплуатации', 0)
+# heading = doc.add_heading(level=1)
+# heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
+# run = heading.add_run('Результаты обследования установок очистки газа и условий их эксплуатации')
+# run.font.color.rgb = RGBColor(0,0,0)
+# run.font.name = 'Times New Roman'  # This is the key line you're missing
+# run.font.size = Pt(8)
 
 
 # Change the page orientation to landscape
@@ -67,4 +76,4 @@ cell.text = "Пылегазоочистное оборудование отсу�
 for paragraph in cell.paragraphs:
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-doc.save('calculations/tables/3_6.docx')
+doc.save(r'calculations\tables\razdel3\3_6.docx')
