@@ -1,9 +1,10 @@
 import os
 import sys
 sys.path.append(os.getcwd())
+
 from docx import Document
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
-from docx.shared import Inches, Pt, RGBColor
+from docx.shared import RGBColor
 from calculations.tables.fill_table_3_1 import fill_table_3_1
 from calculations.tables.fill_table_3_8 import fill_3_8_table
 
@@ -16,14 +17,14 @@ from gross_emissions.calculate_gross_emissions import calculate_gross_emissions
 
 from prilozhenie.prilozhenie2.val_moving import generate_moving_desription
 from prilozhenie.prilozhenie2.val_station import generate_station_desription
-# 
+
 # Всем организованным источникам выбросов присваивают номера от 0001 до 5999, всем неорганизованным источникам - с 6001.
 c = 100
 def fill_document_into_table(num_of_boilers, fuel_type, num_of_days_in_work, num_of_hours_in_day_in_work, fuel_consumption_year, throughpout, tnp, txx1, txx2, L2_warmup, L1_warmup, ab, Nk, Dp, Tr, L1_warm, L2_warm, Nkv, Nkk):
     
     generate_moving_desription(tnp, txx1, txx2, L2_warmup, L1_warmup, ab, Nk, Dp, Tr, L1_warm, L2_warm, Nkv, Nkk)
     generate_station_desription(tnp, txx1, txx2, L2_warmup, L1_warmup, ab, Nk, Dp, Tr, L1_warm, L2_warm, Nkv, Nkk)
-    doc = Document("calculations/tables/first_table.docx")
+    doc = Document(r"calculations\tables\razdel2_table.docx")
     
     COgik_warmup, COgik_warm, CO_mik_warm, CO_mik_warmup, Gno2_warm, Gno2_warm_up, Gno_warm, Gno_warm_up, Mno2_warm, Mno_warm, Mno_warm_up, Mno2_warm_up, SOgik, SO_gik_warm, SO_mik, SO_mik_warm, petrol_gik_warm, petrol_gik_warmup, petrol_mik_warm, petrol_mik_warmup = calculate_gross_emissions(tnp, txx1, txx2, L2_warmup, L1_warmup, ab, Nk, Dp, Tr, L1_warm, L2_warm, Nkv, Nkk)
     fuel_consumption_sec = int(fuel_consumption_year) * 1000 / (60 * 60 * 24 * num_of_days_in_work)
@@ -104,7 +105,7 @@ def fill_document_into_table(num_of_boilers, fuel_type, num_of_days_in_work, num
     table.cell(row_idx, 8).text = str(benzapiren_year)
      
     new_row = table.add_row()
-    row_idx = 7 # Номер строки (начинается с 0)
+    row_idx = 7
     table.cell(row_idx, 0).text = "1728"
     table.cell(row_idx, 1).text = "Этантиол"
     table.cell(row_idx, 6).text = "3"
@@ -113,7 +114,7 @@ def fill_document_into_table(num_of_boilers, fuel_type, num_of_days_in_work, num
     table.cell(row_idx, 8).text = str(etantiol_year)
 
     new_row = table.add_row()
-    row_idx = 8 # Номер строки (начинается с 0)
+    row_idx = 8
     table.cell(row_idx, 0).text = "2704"
     table.cell(row_idx, 1).text = "Бензин (нефтяной, малосернистый)/ в пересчете на углерод"
     table.cell(row_idx, 2).text = "5"
@@ -124,7 +125,8 @@ def fill_document_into_table(num_of_boilers, fuel_type, num_of_days_in_work, num
     table.cell(row_idx, 7).text = str(benzin_sec)
     table.cell(row_idx, 8).text = str(benzin_year)
 
-    doc.save("calculations/zv_info.docx")
+    doc.save(r"calculations\tables\razdel2_table_filled.docx")
+
     doc = Document("calculations/tables/3_7.docx")
     table = doc.tables[0]
     table.cell(3,0).text = "0301\n 0304\n 0330\n 0337\n 0410\n 0703\n 1728\n 2704"
@@ -170,7 +172,7 @@ def fill_document_into_table(num_of_boilers, fuel_type, num_of_days_in_work, num
 def generate_docx(num_of_boilers, fuel_type, num_of_days_in_work, num_of_hours_in_day_in_work, fuel_consumption_year, throughpout, tnp, txx1, txx2, L2_warmup, L1_warmup, ab, Nk, Dp, Tr, L1_warm, L2_warm, Nkv, Nkk, car, speed, num_of_days_in_work_car, num_of_hours_in_day_in_work_car, num_of_days_in_work_parking, num_of_hours_in_day_in_work_parking, num_of_parkings, num_of_days_in_work_candle, num_of_hours_in_day_in_work_candle, num_of_candles, car_amount):
     fill_document_into_table(num_of_boilers, fuel_type, num_of_days_in_work, num_of_hours_in_day_in_work, fuel_consumption_year, throughpout, tnp, txx1, txx2, L2_warmup, L1_warmup, ab, Nk, Dp, Tr, L1_warm, L2_warm, Nkv, Nkk)
     fuel_consumption_sec = int(fuel_consumption_year) * 1000 / (60 * 60 * 24 * num_of_days_in_work)
-    doc = Document("calculations/zv_info.docx")
+    doc = Document(r"calculations\tables\razdel2_table_filled.docx") # docx with filled table for razdel2
     table = doc.tables[0]
     column_index = -1
     total_sum = 0
@@ -185,7 +187,9 @@ def generate_docx(num_of_boilers, fuel_type, num_of_days_in_work, num_of_hours_i
     table.cell(len(table.rows) - 1, 2).text = "В С Е Г О"
     table.cell(len(table.rows) - 1, len(table.rows[0].cells) - 1).text = str(total_sum)
     parent = table._element.getparent()
-    par = doc.add_paragraph(f"""Всего на производственной площадке выделяется {len(doc.tables[0].rows) - 1} загрязняющих веществ. Валовый выброс загрязняющих веществ составляет {total_sum} тонн в год (твёрдых – ПЕРЕМЕННАЯ; газообразных и жидких – ПЕРЕМЕННАЯ""")
+    tmp_zhid = 0.04698605186
+    tmp_tverd = 0.0000001
+    par = doc.add_paragraph(f"""Всего на производственной площадке выделяется {len(doc.tables[0].rows) - 1} загрязняющих веществ. Валовый выброс загрязняющих веществ составляет {total_sum} тонн в год (твёрдых – {tmp_tverd}; газообразных и жидких – {tmp_zhid}""")
     parent.insert(parent.index(table._element), par._element)
     par = doc.add_paragraph("Перечень нормативно-методических документов, использованных для расчета:")
     par.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
@@ -202,7 +206,8 @@ def generate_docx(num_of_boilers, fuel_type, num_of_days_in_work, num_of_hours_i
 ]
     for method in LIST_OF_METHODS:
         paragraph = doc.add_paragraph(method, style='List Number')
-    doc.save("calculations/zv_info.docx")
+    doc.save("inventarization_description\izav_info\part2_without_intro.docx")
+
     COgik_warmup, COgik_warm, CO_mik_warm, CO_mik_warmup, Gno2_warm, Gno2_warm_up, Gno_warm, Gno_warm_up, Mno2_warm, Mno_warm, Mno_warm_up, Mno2_warm_up, SOgik, SO_gik_warm, SO_mik, SO_mik_warm, petrol_gik_warm, petrol_gik_warmup, petrol_mik_warm, petrol_mik_warmup = calculate_gross_emissions(tnp, txx1, txx2, L2_warmup, L1_warmup, ab, Nk, Dp, Tr, L1_warm, L2_warm, Nkv, Nkk)
     mno2_t = calculate_Mno2_t(fuel_consumption_year=fuel_consumption_year, fuel_consumption_sec=fuel_consumption_sec)
     MNO2_g = calculate_MNO2_g(fuel_consumption_sec=fuel_consumption_sec)
@@ -210,12 +215,13 @@ def generate_docx(num_of_boilers, fuel_type, num_of_days_in_work, num_of_hours_i
     mco_year = calculate_MCO_year(fuel_consumption_year=fuel_consumption_year)
     mno_g = calculate_MNO_g(fuel_consumption_sec=fuel_consumption_sec)
     azot_2_oksid_year = calculate_MNO_t(fuel_consumption_year=fuel_consumption_year, fuel_consumption_sec=fuel_consumption_sec)
-    sera_dioksid_sec = SOgik + SO_gik_warm
-    sera_dioksid_year = SO_mik + SO_mik_warm
     methane_sec, methane_year = calculate_methane(throughpout=throughpout)
     methane_sec = round(methane_sec, 6)
     benzapiren_sec = calculate_amount_of_benzapiren_sec(fuel_consumption_sec=fuel_consumption_sec)
     benzapiren_year = calculate_amount_of_benzapiren_year(fuel_consumption_year=fuel_consumption_year, num_of_days_in_work=num_of_days_in_work)
     etantiol_sec, etantiol_year = calculate_ethanethiol(throughpout=throughpout)
-    fill_table_3_1(Mno_warm, SO_mik_warm, CO_mik_warm, petrol_mik_warm, Gno_warm, SO_gik_warm, COgik_warm, petrol_gik_warm, mco_sec, mco_year, MNO2_g, azot_2_oksid_year, mno2_t, mno_g, benzapiren_sec,benzapiren_year, methane_sec, methane_year,etantiol_sec, etantiol_year, Gno2_warm, Gno2_warm_up, Mno2_warm, Mno2_warm_up, SOgik, SO_mik, COgik_warmup, CO_mik_warmup, petrol_gik_warmup, petrol_mik_warmup, num_of_boilers, num_of_days_in_work,num_of_hours_in_day_in_work, num_of_days_in_work_parking, num_of_hours_in_day_in_work_parking, num_of_parkings, num_of_days_in_work_candle, num_of_hours_in_day_in_work_candle, num_of_candles, num_of_days_in_work_car, num_of_hours_in_day_in_work_car, car_amount)
+    sera_dioksid_sec = SOgik + SO_gik_warm
+    sera_dioksid_year = SO_mik + SO_mik_warm
+
+    fill_table_3_1(sera_dioksid_sec, sera_dioksid_year, Mno_warm, SO_mik_warm, CO_mik_warm, petrol_mik_warm, Gno_warm, SO_gik_warm, COgik_warm, petrol_gik_warm, mco_sec, mco_year, MNO2_g, azot_2_oksid_year, mno2_t, mno_g, benzapiren_sec,benzapiren_year, methane_sec, methane_year,etantiol_sec, etantiol_year, Gno2_warm, Gno2_warm_up, Mno2_warm, Mno2_warm_up, SOgik, SO_mik, COgik_warmup, CO_mik_warmup, petrol_gik_warmup, petrol_mik_warmup, num_of_boilers, num_of_days_in_work,num_of_hours_in_day_in_work, num_of_days_in_work_parking, num_of_hours_in_day_in_work_parking, num_of_parkings, num_of_days_in_work_candle, num_of_hours_in_day_in_work_candle, num_of_candles, num_of_days_in_work_car, num_of_hours_in_day_in_work_car, car_amount)
     fill_3_8_table(1, car, Nk, speed, fuel_type, num_of_days_in_work_car * num_of_hours_in_day_in_work_car,  num_of_days_in_work_car * num_of_hours_in_day_in_work_car, Mno2_warm, Mno_warm, SO_mik_warm, CO_mik_warm, petrol_mik_warm, Gno2_warm, Gno_warm, SO_gik_warm, COgik_warm, petrol_gik_warm)
