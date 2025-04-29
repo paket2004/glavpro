@@ -22,7 +22,7 @@ def calculate_Mno2_t(fuel_consumption_year, fuel_consumption_sec):
     KNO = 0.013 * Qt **0.5 + 0.03
     MNOx_t = fuel_consumption_year * Q * KNO * b1 * br * b2 * (1-b3) * (1-b4) * 0.001 # kn = 1 - г/с
     MNO2_t = 0.8 * MNOx_t
-    MNO2_t = round(MNO2_t,4)
+    MNO2_t = round(MNO2_t,6)
     return MNO2_t
 
 
@@ -31,7 +31,7 @@ def calculate_MNO_g(fuel_consumption_sec):
     KNO = 0.013 * Qt **0.5 + 0.03
     MNOx_g = fuel_consumption_sec * Q * KNO * b1 * br * b2 * (1-b3) * (1-b4) * 1 # kn = 1 - г/с
     MNO_g = 0.13 * MNOx_g
-    MNO_g = round(MNO_g,4)
+    MNO_g = round(MNO_g,6)
     return MNO_g
 
 
@@ -41,5 +41,5 @@ def calculate_MNO_t(fuel_consumption_year, fuel_consumption_sec):
     KNO = 0.013 * Qt **0.5 + 0.03
     MNOx_t = fuel_consumption_year * Q * KNO * b1 * br * b2 * (1-b3) * (1-b4) * 0.001 # kn = 1 - г/с
     MNO_t = 0.13 * MNOx_t
-    MNO_t = round(MNO_t,4)
+    MNO_t = round(MNO_t,6)
     return MNO_t
