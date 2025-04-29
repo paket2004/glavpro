@@ -1,4 +1,5 @@
 from docx import Document
+
 def fill_3_8_table(number, izav_type, izav_amount, izav_speed, fuel_type, work_time_season, work_time_year, nitric_ocide_1_year_warm, nitric_ocide_year_warm, sulfur_year_warm, CO_year_warm, petrol_year_warm, nitric_ocide_1_sec_warm, nitric_ocide_sec_warm, sulfur_sec_warm, CO_sec_warm, petrol_sec_warm):
     doc = Document("calculations/tables/3_8.docx")
     table = doc.tables[0]
