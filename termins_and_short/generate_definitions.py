@@ -13,17 +13,35 @@ client = OpenAI()
 
 def add_shortcuts_to_doc(doc, shortcuts_cur, shorcuts_list):
     # doc.add_heading("Принятые в отчете сокращения", level=1)
+    style = doc.styles['Normal']
+    style.font.name = 'Times New Roman'
     heading = doc.add_heading(level=1)
     heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run = heading.add_run('''
     Принятые в отчете по инвентаризации стационарных источников и выбросов вредных (загрязняющих) веществ в атмосферный воздух сокращения:''')
+    run = heading.runs[0]
+    run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
+    run.font.name = 'Times New Roman'
+    run.font.size = Pt(8)
     run.bold = True
-    run.font.color.rgb = RGBColor(0,0,0)
     for shorcut in shortcuts_cur:
         if shorcut in shorcuts_list.keys():
-            doc.add_paragraph(f"{shorcut} – {shorcuts_list[shorcut]}")
+            # # doc.add_paragraph(f"{shorcut} – {shorcuts_list[shorcut]}")
+            # p = doc.add_paragraph()
+            # # Add a run to the paragraph and set font properties
+            # run = p.add_run(f"{shorcut} – {shorcuts_list[shorcut]}")
+            # run.font.name = 'Times New Roman'  # Set font
+            # run.font.size = Pt(6)
+            p = doc.add_paragraph()
+            p.paragraph_format.space_after = Pt(0)  # Убираем отступ после абзаца
+            p.paragraph_format.line_spacing = 1.0  # Межстрочный интервал (1.0 - одинарный)
+            
+            run = p.add_run(f"{shorcut} – {shorcuts_list[shorcut]}")
+            run.font.name = 'Times New Roman'
+            run.font.size = Pt(6)
         else:
             print("Нет такого сокращения")
+    
 
 
 def generate_response(termins: str, shortcuts: dict):
@@ -66,12 +84,18 @@ def generate_response(termins: str, shortcuts: dict):
 
 
     doc = Document()
+    style = doc.styles['Normal']
+    style.font.name = 'Times New Roman'
     heading = doc.add_heading(level=1)
     heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run = heading.add_run('Основные термины, используемые в проекте')
-    run.bold = True
-    run.font.color.rgb = RGBColor(0,0,0)
-    run.font.size = Pt(13)
+    run = heading.runs[0]
+    run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
+    run.font.name = 'Times New Roman'
+    run.font.size = Pt(8)
+    # run.bold = True
+    # run.font.color.rgb = RGBColor(0,0,0)
+    # run.font.size = Pt(13)
     table = doc.add_table(rows=len(results), cols=2)
 
     table.style = 'Table Grid'
@@ -83,10 +107,21 @@ def generate_response(termins: str, shortcuts: dict):
         # Add value to the second column
         table.cell(i, 1).text = str(value)
 
+    for row in table.rows:
+        for cell in row.cells:
+            for paragraph in cell.paragraphs:
+                for run in paragraph.runs:
+                    run.font.size = Pt(6)
+
     # Добавляем сокращения в документ
     if shortcuts:
         add_shortcuts_to_doc(doc, shortcuts, shorcuts_list)
 
+    # for row in table.rows:
+    #     for cell in row.cells:
+    #         for paragraph in cell.paragraphs:
+    #             for run in paragraph.runs:
+    #                 run.font.size = Pt(6)
     # Save the document
     doc.save('termins_and_short/dictionary_table.docx')
     
