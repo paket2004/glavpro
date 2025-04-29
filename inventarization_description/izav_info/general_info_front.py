@@ -2,11 +2,12 @@ import streamlit as st
 from docx import Document
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.shared import Inches, Pt, RGBColor
-
+from docx.oxml.ns import qn
 st.title("Добавление источников выбросов и сохранение в DOCX")
 
 
 work_area = st.text_input("Введите основной вид деятельности вашего предприятия")
+organization_name = st.text_input("Введите название вашей организации")
 # Инициализация состояния
 if "sources" not in st.session_state:
     st.session_state.sources = []
@@ -58,15 +59,18 @@ if st.session_state.sources:
             st.markdown(f"Источник №{s['number']} – {s['name']}")
 
 # Функция для генерации DOCX
-def generate_docx(sources):
+def generate(sources):
     doc = Document()
-    heading = doc.add_heading("2. ОПИСАНИЕ ПРОВЕДЕННЫХ РАБОТ ПО ИНВЕНТАРИЗАЦИИ С УКАЗАНИЕМ НОРМАТИВНО-МЕТОДИЧЕСКИХ ДОКУМЕНТОВ И ПЕРЕЧНЯ ИСПОЛЬЗОВАННЫХ МЕТОДИК ВЫПОЛНЕНИЯ ИЗМЕРЕНИЙ ЗАГРЯЗНЯЮЩИХ ВЕЩЕСТВ И РАСЧЁТНОГО ОПРЕДЕЛЕНИЯ ВЫБРОСОВ", level=1)
+    heading = doc.add_paragraph()
+    heading_run = heading.add_run("2. ОПИСАНИЕ ПРОВЕДЕННЫХ РАБОТ ПО ИНВЕНТАРИЗАЦИИ С УКАЗАНИЕМ НОРМАТИВНО-МЕТОДИЧЕСКИХ ДОКУМЕНТОВ И ПЕРЕЧНЯ ИСПОЛЬЗОВАННЫХ МЕТОДИК ВЫПОЛНЕНИЯ ИЗМЕРЕНИЙ ЗАГРЯЗНЯЮЩИХ ВЕЩЕСТВ И РАСЧЁТНОГО ОПРЕДЕЛЕНИЯ ВЫБРОСОВ")
+    heading_run.font.name = 'Times New Roman'
+    heading_run._element.rPr.rFonts.set(qn('w:eastAsia'), 'Times New Roman')  # For Cyrillic support
+    heading_run.font.size = Pt(8)
+    heading_run.bold = True
     heading.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
-    run = heading.runs[0]
-    run.font.color.rgb = RGBColor(0, 0, 0)
     doc.add_paragraph(
-        f"Основной производственной деятельностью объекта негативного воздействия СЮДА ПЕРЕДАВАТЬ НАЗВАНИЕ ПРЕДПРИЯТИЯ является {work_area}.\n"
-        "Всего на предприятии {} источника выбросов загрязняющих веществ в атмосферу из них:".format(len(sources))
+        f"  Основной производственной деятельностью объекта негативного воздействия {organization_name} является {work_area}.\n"
+        "   Всего на предприятии {} источника выбросов загрязняющих веществ в атмосферу из них:".format(len(sources))
     )
 
     organized = [s for s in sources if s["category"] == "Организованный"]
@@ -81,15 +85,13 @@ def generate_docx(sources):
         doc.add_paragraph(f"Неорганизованные источники ({len(unorganized)} шт.):")
         for s in unorganized:
             doc.add_paragraph(f"Источник №{s['number']} – {s['name']}")
-
-    file_path = "izav_info/Источники_выбросов.docx"
-    doc.save(file_path)
-    return file_path
+    doc.save("inventarization_description\izav_info\description.docx")
+    return "inventarization_description\izav_info\description.docx"
 
 # Кнопка для сохранения в DOCX
 if st.button("Сохранить в DOCX"):
     if st.session_state.sources:
-        file_path = generate_docx(st.session_state.sources)
+        file_path = generate(st.session_state.sources)
         with open(file_path, "rb") as f:
             st.download_button("Скачать DOCX", f, file_name="Источники_выбросов.docx")
     else:

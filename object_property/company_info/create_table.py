@@ -1,13 +1,9 @@
 import pandas as pd
 from docx import Document
-from openai import OpenAI
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-import os
 from docx.shared import Pt, RGBColor
 from docx.shared import Inches, Pt
-from docx.enum.section import WD_ORIENT, WD_SECTION
 from docx.oxml.ns import qn
-from docx.oxml import OxmlElement
 
 doc = Document()
 

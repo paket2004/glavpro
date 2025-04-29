@@ -34,7 +34,7 @@ for row in table.rows:
     for cell in row.cells:
         for paragraph in cell.paragraphs:
             for run in paragraph.runs:
-                run.font.size = Pt(10)
+                run.font.size = Pt(6)
 
 # Сохраняем документ
-doc.save("sanitary_zone/sanpin_table.docx")
+doc.save("object_property\sanitary_zone\sanpin_table.docx")

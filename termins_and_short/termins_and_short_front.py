@@ -24,7 +24,7 @@ def main():
                 generate_response(termins, shortcuts)
 
                 # Provide a download link for the generated DOCX
-                with open("dictionary_table.docx", "rb") as file:
+                with open("termins_and_short\dictionary_table.docx", "rb") as file:
                     doc_bytes = file.read()
 
                 st.success("Документ успешно сгенерирован!")
