@@ -12,7 +12,6 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI()
 
 def add_shortcuts_to_doc(doc, shortcuts_cur, shorcuts_list):
-    # doc.add_heading("Принятые в отчете сокращения", level=1)
     style = doc.styles['Normal']
     style.font.name = 'Times New Roman'
     heading = doc.add_heading(level=1)
@@ -26,15 +25,9 @@ def add_shortcuts_to_doc(doc, shortcuts_cur, shorcuts_list):
     run.bold = True
     for shorcut in shortcuts_cur:
         if shorcut in shorcuts_list.keys():
-            # # doc.add_paragraph(f"{shorcut} – {shorcuts_list[shorcut]}")
-            # p = doc.add_paragraph()
-            # # Add a run to the paragraph and set font properties
-            # run = p.add_run(f"{shorcut} – {shorcuts_list[shorcut]}")
-            # run.font.name = 'Times New Roman'  # Set font
-            # run.font.size = Pt(6)
             p = doc.add_paragraph()
-            p.paragraph_format.space_after = Pt(0)  # Убираем отступ после абзаца
-            p.paragraph_format.line_spacing = 1.0  # Межстрочный интервал (1.0 - одинарный)
+            p.paragraph_format.space_after = Pt(0)
+            p.paragraph_format.line_spacing = 1.0
             
             run = p.add_run(f"{shorcut} – {shorcuts_list[shorcut]}")
             run.font.name = 'Times New Roman'
@@ -45,9 +38,6 @@ def add_shortcuts_to_doc(doc, shortcuts_cur, shorcuts_list):
 
 
 def generate_response(termins: str, shortcuts: dict):
-    # termins = input("Пожалуйста, введите термины, используемые в проекте через точку с запятой: ")
-    # termins = termins.split(";")
-    print(termins)
     # ТУТ БЫ В БУДУЩЕМ ПРОВЕРКУ ОТ ЛЛМКИ НА ОПЕЧАТКУ И РЕГЕКСПЫ НА ТО, ЧТО НАПИСАНО ЧТО-ТО АДЕКВАТНОЕ
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
@@ -93,13 +83,8 @@ def generate_response(termins: str, shortcuts: dict):
     run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
     run.font.name = 'Times New Roman'
     run.font.size = Pt(8)
-    # run.bold = True
-    # run.font.color.rgb = RGBColor(0,0,0)
-    # run.font.size = Pt(13)
     table = doc.add_table(rows=len(results), cols=2)
-
     table.style = 'Table Grid'
-
     # Populate the table with dictionary keys and values
     for i, (key, value) in enumerate(results.items()):
         # Add key to the first column
@@ -116,13 +101,6 @@ def generate_response(termins: str, shortcuts: dict):
     # Добавляем сокращения в документ
     if shortcuts:
         add_shortcuts_to_doc(doc, shortcuts, shorcuts_list)
-
-    # for row in table.rows:
-    #     for cell in row.cells:
-    #         for paragraph in cell.paragraphs:
-    #             for run in paragraph.runs:
-    #                 run.font.size = Pt(6)
-    # Save the document
     doc.save('termins_and_short/dictionary_table.docx')
     
 
