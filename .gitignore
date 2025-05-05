@@ -10,3 +10,4 @@ gross_emissions/*.docx
 object_property/*.docx
 object_property/sanitary_zone/*.docx
 **/*.docx
+labelme_venv/
