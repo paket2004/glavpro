@@ -83,16 +83,11 @@ table.cell(1, 20).merge(table.cell(2, 20))
 table.cell(1, 21).merge(table.cell(2, 21))
 table.cell(1, 22).merge(table.cell(2, 22))
 table.cell(1, 23).merge(table.cell(2, 23))
-table.cell(0, 24).merge(table.cell(2, 24))  # Инвентарный N газоочистного оборудования
-table.cell(0, 25).merge(table.cell(2, 25))  # Номер ИЗАВ
+table.cell(0, 24).merge(table.cell(2, 24))
+table.cell(0, 25).merge(table.cell(2, 25))
 
 # Заполняем заголовки
 for i, header in enumerate(headers):
     table.cell(0, i).text = header
 
-    # # Добавляем пустые строки для данных
-    # for row in range(2, 3):  # Добавляем одну пустую строку для данных
-    #     for col in range(18):
-    #         table.cell(row, col).text = ""  # Оставляем ячейки пустыми
-    # Сохраняем документ
 doc.save('calculations/tables/3_2.docx')
