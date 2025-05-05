@@ -25,8 +25,5 @@ files_to_merge = [
     "object_property\dust_and_gas\dust_and_gus_info.docx",
     "object_property\previous_inventarization\prev_inv_info.docx"
 ]
-# filename_master="report.docx"
-# document = Document()
-# document.save("emptyfile.docx")
 filename_master="object_property\sanitary_zone\description.docx"
 combine_all_docx(filename_master,files_to_merge)

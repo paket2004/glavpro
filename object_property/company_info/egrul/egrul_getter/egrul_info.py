@@ -35,17 +35,9 @@ def get_statement(inn: str):
             EC.presence_of_element_located((By.ID, 'query'))
         )
             
-        # Enter the INN number
         inn_form.send_keys(inn)
-            
-        # Press ENTER
         inn_form.send_keys(Keys.ENTER)
         time.sleep(5)
-            
-        # content = WebDriverWait(browser, 10).until(
-        #     EC.presence_of_element_located((By.ID, 'res-text'))
-        # )
-        # content = browser.find_element(by=By.ID, value='res-text')
         content = WebDriverWait(browser, 10).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'res-text'))
         )
@@ -55,17 +47,11 @@ def get_statement(inn: str):
             EC.element_to_be_clickable((By.CLASS_NAME, 'btn-with-icon.btn-excerpt.op-excerpt'))
         )
             
-            # Click the button to initiate the download
         download_button.click()
             
-            # Wait for the download to complete
         time.sleep(10)  # Adjust the sleep time based on the file size and network speed
 
             # print(content)
-            # Wait for a few seconds to see the result (you can adjust the time as needed)
             
-
-
     finally:
-        # Close the browser
         browser.quit()
