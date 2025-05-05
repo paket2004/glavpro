@@ -4,16 +4,12 @@ from urllib.parse import quote
 from PIL import Image
 from io import BytesIO
 
-# Конфигурация (ПЕРЕМЕСТИТЕ В ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ!)
-GOOGLE_API_KEY = "AIzaSyAL9pC1huSldjegbhv91Eqh0v1axfyMPlQ"  # Замените на свой ключ
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+# GOOGLE_API_KEY = "AIzaSyAL9pC1huSldjegbhv91Eqh0v1axfyMPlQ"
 OUTPUT_FOLDER = "prilozhenie/map/screenshots"
-ADDRESSES = [
-    "Оренбургская область, с. Мирошкино, ул. Центральная, 27",
-    # Добавьте другие адреса по необходимости
-]
-ZOOM_LEVEL = 17  # 18-20 для детализации зданий
-# IMAGE_SIZE = "640x640"  # Максимальный размер для бесплатного тарифа
-IMAGE_SIZE = "1280x1280"  # Требуется платный тариф Google Maps Static API!
+ADDRESSES = ["Оренбургская область, с. Мирошкино, ул. Центральная, 27",]
+ZOOM_LEVEL = 17 
+IMAGE_SIZE = "1280x1280"
 SHIFT_LEFT = 0.0025
 SHIFT_UP = 0.001
 
@@ -57,40 +53,13 @@ def save_satellite_image(lat, lon, address, zoom=ZOOM_LEVEL, size=IMAGE_SIZE, sh
     try:
         response = requests.get(url, timeout=10)
         response.raise_for_status()
-
         image = Image.open(BytesIO(response.content))
-
-        # Уменьшаем изображение, чтобы сымитировать масштаб между 17 и 18
-        # resized_image = image.resize((960, 960), Image.LANCZOS)
-        resized_image = image.resize((960, 960), Image.LANCZOS).convert("RGB")
-
-
-        safe_address = "".join(c if c.isalnum() else "_" for c in address)
-        filename = f"{safe_address}_{lat}_{lon}_z{zoom}_scaled.jpg"
-        filepath = os.path.join(OUTPUT_FOLDER, filename)
-
-        resized_image.save(filepath, format="JPEG")
-        print(f"Сохранено: {filepath}")
-        return filepath
+        image_RGB = image.convert("RGB")
+        image_RGB.save("prilozhenie\map\screenshots\map_schema.jpg", format="JPEG", quality=100)
     except Exception as e:
         print(f"Ошибка при загрузке изображения для {address}: {str(e)}")
         return None
-    # try:
-    #     response = requests.get(url, timeout=10)
-    #     response.raise_for_status()
-        
-    #     # Создаем безопасное имя файла
-    #     safe_address = "".join(c if c.isalnum() else "_" for c in address)
-    #     filename = f"{safe_address}_{lat}_{lon}_z{zoom}.jpg"
-    #     filepath = os.path.join(OUTPUT_FOLDER, filename)
-        
-    #     with open(filepath, "wb") as f:
-    #         f.write(response.content)
-    #     print(f"Сохранено: {filepath}")
-    #     return filepath
-    # except Exception as e:
-    #     print(f"Ошибка при загрузке изображения для {address}: {str(e)}")
-    #     return None
+
 def main():
     create_folder()
     

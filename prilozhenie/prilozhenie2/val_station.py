@@ -14,8 +14,11 @@ def generate_station_desription(tnp, txx1, txx2, L2_warmup, L1_warmup, ab, Nk, D
     run = heading.add_run('РАСЧЁТ ВАЛОВЫХ ВЫБРОСОВ')
     run.bold = True
     run.font.color.rgb = RGBColor(0,0,0)
-    run.font.size = Pt(14)
+    run.bold = True
+    run.font.size = Pt(10)  # Размер 10 для заголовка
 
+
+    
     doc.add_paragraph('''
     Площадка 01
     Стационарный источник загрязнения 6003, режим ИЗАВ: 1

@@ -1,22 +1,36 @@
+from docxcompose.composer import Composer
+from docx import Document as Document_compose
 from docx import Document
-from docx.enum.text import WD_BREAK
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
 
-def merge_docx_with_page_breaks(files, output_file):
-    merged_document = Document(files[0])  # Start with the first document
+def create_page_break_doc():
+    temp_doc = Document()
+    paragraph = temp_doc.add_paragraph()
+    run = paragraph.add_run()
+    br = OxmlElement('w:br')
+    br.set(qn('w:type'), 'page')
+    run._r.append(br)
+    return temp_doc
 
-    for file in files[1:]:  # Merge the rest
-        # Add page break before next document
-        merged_document.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
-        
-        doc = Document(file)
-        for element in doc.element.body:
-            merged_document.element.body.append(element)
+def combine_all_docx(filename_master, files_list):
+    master = Document_compose(filename_master)
+    composer = Composer(master)
+    composer.append(create_page_break_doc())
 
-    merged_document.save(output_file)
-    print(f"Documents merged successfully into {output_file} with page breaks")
+    for i, file_path in enumerate(files_list):
+        doc_temp = Document_compose(file_path)
+        composer.append(doc_temp)
+        if i < len(files_list) - 1:
+            composer.append(create_page_break_doc())
 
-# Example usage
-files_to_merge = ["prilozhenie/prilozhenie2/station.docx", 
-                 "prilozhenie/prilozhenie2/moving.docx"]
-merge_docx_with_page_breaks(files_to_merge, 
-                          "prilozhenie/prilozhenie2/merged_calculations.docx")
+    composer.save("prilozhenie\prilozhenie2\car_report.docx")
+
+
+
+files_to_merge = [
+    "prilozhenie/prilozhenie2/moving.docx",
+]
+# filename_master="report.docx"
+filename_master="prilozhenie/prilozhenie2/station.docx"
+combine_all_docx(filename_master,files_to_merge)

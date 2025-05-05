@@ -1,6 +1,6 @@
 import os
 from PyPDF2 import PdfMerger
-from docx2pdf import convert  # Requires `docx2pdf` (pip install docx2pdf)
+from docx2pdf import convert
 
 def merge_pdf_docx(pdf_path, docx_path, output_pdf_path):
     """Merge a PDF and DOCX into a single PDF."""
@@ -8,13 +8,10 @@ def merge_pdf_docx(pdf_path, docx_path, output_pdf_path):
         # Temporary PDF for the DOCX content
         temp_pdf_path = "prilozhenie/prilozhenie2/temp_docx.pdf"
         
-        # 1. Convert DOCX to PDF
-        convert(docx_path, temp_pdf_path)  # Using docx2pdf
-        
-        # 2. Merge both PDFs
+        convert(docx_path, temp_pdf_path)
         merger = PdfMerger()
-        merger.append(pdf_path)      # Original PDF
-        merger.append(temp_pdf_path) # DOCX-as-PDF
+        merger.append(pdf_path)
+        merger.append(temp_pdf_path)
         merger.write(output_pdf_path)
         merger.close()
         
@@ -29,9 +26,8 @@ def merge_pdf_docx(pdf_path, docx_path, output_pdf_path):
             os.remove(temp_pdf_path)
         return False
 
-# Usage
 merge_pdf_docx(
-    pdf_path="C:/Users/79133/glavpro/prilozhenie/prilozhenie2/result.pdf",
-    docx_path="C:/Users/79133/glavpro/prilozhenie/prilozhenie2/merged_calculations.docx",
-    output_pdf_path="C:/Users/79133/glavpro/prilozhenie/prilozhenie2/merged_final.pdf"
+    pdf_path="prilozhenie/prilozhenie2/prilozhenie2.pdf",
+    docx_path="prilozhenie/prilozhenie2/car_report.docx",
+    output_pdf_path="prilozhenie/prilozhenie2/part_2.pdf"
 )
