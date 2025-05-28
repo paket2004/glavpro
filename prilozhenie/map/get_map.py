@@ -5,7 +5,7 @@ from PIL import Image
 from io import BytesIO
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-# GOOGLE_API_KEY = "AIzaSyAL9pC1huSldjegbhv91Eqh0v1axfyMPlQ"
+
 OUTPUT_FOLDER = "prilozhenie/map/screenshots"
 ADDRESSES = ["Оренбургская область, с. Мирошкино, ул. Центральная, 27",]
 ZOOM_LEVEL = 17 
