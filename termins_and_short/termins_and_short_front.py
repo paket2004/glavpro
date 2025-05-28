@@ -1,7 +1,7 @@
 import streamlit as st
 from generate_definitions import generate_response
 from io import BytesIO
-
+import os
 
 def main():
     st.title("Генерация определений по терминам")
@@ -24,7 +24,8 @@ def main():
                 generate_response(termins, shortcuts)
 
                 # Provide a download link for the generated DOCX
-                with open("termins_and_short\dictionary_table.docx", "rb") as file:
+                path = os.path.join("termins_and_short", "dictionary_table.docx")
+                with open(path, "rb") as file:
                     doc_bytes = file.read()
 
                 st.success("Документ успешно сгенерирован!")
