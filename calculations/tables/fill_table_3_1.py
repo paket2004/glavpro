@@ -30,8 +30,8 @@ def fill_table_3_1(sera_dioksid_sec, sera_dioksid_year, Mno_warm, SO_mik_warm, C
     # Кол-во выделяемого ЗВ (в граммах/сек и т/год) 
     table.cell(3,12).text = f"{MNO2_g}\n\n{mno_g}\n\n{mco_sec}\n\n{benzapiren_sec}\n\n{methane_sec}\n\n{etantiol_sec}\n\n{Gno2_warm_up}\n\n{0.0000364}\n\n{SOgik}\n\n{COgik_warmup}\n\n{petrol_gik_warmup}\n\n{Gno2_warm}\n\n{Gno_warm}\n\n{SO_gik_warm}\n\n{COgik_warm}\n\n{petrol_gik_warm}"
     #                             +              +                    +             +                    +                  +               +                   -                +           -              +                    -           -                          +            +                +                  +                  +                 +                   +
-    table.cell(3,13).text = f"{mno2_t}\n\n{azot_2_oksid_year}\n\n{mco_year}\n\n{benzapiren_year}\n\n{methane_year}\n\n{etantiol_year}\n\n{Mno2_warm_up}\n\n{"0.00000923"}\n\n{SO_mik}\n\n{CO_mik_warmup}\n\n {petrol_mik_warmup}\n\n {Mno2_warm} \n\n {Mno_warm} \n\n {SO_mik_warm} \n\n {CO_mik_warm}\n\n {petrol_mik_warm}"
-    table.cell(3,14).text = f"{mno2_t}\n\n{azot_2_oksid_year}\n\n{mco_year}\n\n{benzapiren_year}\n\n{methane_year}\n\n{etantiol_year}\n\n{Mno2_warm_up}\n\n{"0.00000923"}\n\n{SO_mik}\n\n{CO_mik_warmup}\n\n {petrol_mik_warmup}\n\n {Mno2_warm} \n\n {Mno_warm} \n\n {SO_mik_warm} \n\n {CO_mik_warm}\n\n {petrol_mik_warm}"
+    table.cell(3,13).text = f"{mno2_t}\n\n{azot_2_oksid_year}\n\n{mco_year}\n\n{benzapiren_year}\n\n{methane_year}\n\n{etantiol_year}\n\n{Mno2_warm_up}\n\n{0.00000923}\n\n{SO_mik}\n\n{CO_mik_warmup}\n\n {petrol_mik_warmup}\n\n {Mno2_warm} \n\n {Mno_warm} \n\n {SO_mik_warm} \n\n {CO_mik_warm}\n\n {petrol_mik_warm}"
+    table.cell(3,14).text = f"{mno2_t}\n\n{azot_2_oksid_year}\n\n{mco_year}\n\n{benzapiren_year}\n\n{methane_year}\n\n{etantiol_year}\n\n{Mno2_warm_up}\n\n{0.00000923}\n\n{SO_mik}\n\n{CO_mik_warmup}\n\n {petrol_mik_warmup}\n\n {Mno2_warm} \n\n {Mno_warm} \n\n {SO_mik_warm} \n\n {CO_mik_warm}\n\n {petrol_mik_warm}"
     
 
     # Iterate through all cells in the table
