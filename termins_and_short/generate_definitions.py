@@ -7,7 +7,7 @@ from docx import Document
 
 import re
 
-from generate_short import shorcuts_list
+from termins_and_short.generate_short import shorcuts_list
 openai.api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI()
 
