@@ -2,11 +2,8 @@ import os
 import sys
 sys.path.append(os.getcwd())
 import streamlit as st
-from calculations.fill_document import fill_document_into_table, generate_docx
+from calculations.fill_document import generate_docx
 st.title("Информация о первом источнике загрязнения")
-from gross_emissions.calculate_gross_emissions import calculate_gross_emissions
-
-
 st.text("Нам необходимо знать данные о передвижном источнике загрязнения для выполнения расчётов. Пожалуйста, предоставьте их нам.")
 
 car_types = ["Автобусы карбюраторные особо малые габаритной длиной до 5.5 м (СНГ)", "","Легковые автомобилями выпуска до 01.01.94 г."]
