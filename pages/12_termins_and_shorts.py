@@ -22,7 +22,9 @@ def main():
                 # Call the generate_response function
                 generate_response(termins, shortcuts)
 
-                path = os.path.join("termins_and_short", "dictionary_table.docx")
+                # path = os.path.join("termins_and_short", "dictionary_table.docx")
+                path = os.path.join(os.getcwd(), "termins_and_short", "dictionary_table.docx")
+                print(path)
                 with open(path, "rb") as file:
                     doc_bytes = file.read()
 
