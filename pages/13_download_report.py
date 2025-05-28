@@ -1,3 +1,3 @@
 import streamlit as st
 
-st.download_button("Скачать отчёт!")
+# st.download_button("Скачать отчёт!")
