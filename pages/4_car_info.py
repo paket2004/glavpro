@@ -30,4 +30,4 @@ Tr = st.number_input("Период максимальной интенсивно
 if st.button("Отправить данные"):
     ab = Nkv/Nk
     calculate_gross_emissions(tnp, txx1, txx2, L2_warmup, L1_warmup, ab, Nk, Dp, Tr, L1_warm, L2_warm, Nkv, Nkk)
-    st.success("ssss")
+    st.success("Расчёт успешно произведён. Данные сохранены в документ.")
