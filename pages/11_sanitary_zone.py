@@ -1,11 +1,11 @@
 import streamlit as st
 import pandas as pd
 from docx import Document
-from docx.shared import Inches
 from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
+PAGE_PREFIX = "sanitary_"
 # Заголовок приложения
 st.title("Редактируемая таблица с направлениями")
 
@@ -13,7 +13,7 @@ st.title("Редактируемая таблица с направлениям�
 columns = ["Направление", "Расстояние, м", "Адрес", "Категория земель и разрешённое использование"]
 
 # Инициализация DataFrame с заполненной колонкой "Направление"
-if 'df' not in st.session_state:
+if f'{PAGE_PREFIX}df' not in st.session_state:
     # Создаём DataFrame с колонкой "Направление", заполненной сторонами света
     directions = ["Север", "Северо-восток", "Восток", "Юго-восток", "Юг", "Юго-запад", "Запад", "Северо-запад"]
     data = {
@@ -22,19 +22,21 @@ if 'df' not in st.session_state:
         "Адрес": [""] * len(directions),
         "Категория земель и разрешённое использование": [""] * len(directions)
     }
-    st.session_state.df = pd.DataFrame(data)
+    st.session_state[f'{PAGE_PREFIX}df'] = pd.DataFrame(data)
 
 # Отображаем редактируемую таблицу
 st.write("Введите данные в таблицу:")
-edited_df = st.data_editor(st.session_state.df, num_rows="dynamic")  # Фиксированное количество строк
-
-# Сохраняем изменения в session_state
-st.session_state.df = edited_df
+edited_df = st.data_editor(
+    st.session_state[f'{PAGE_PREFIX}df'],
+    num_rows="dynamic",
+    key=f'{PAGE_PREFIX}editor'
+)
+st.session_state[f'{PAGE_PREFIX}df'] = edited_df
 
 # Кнопка для вывода данных
 if st.button("Показать введённые данные"):
     st.write("Введённые данные:")
-    st.write(st.session_state.df)
+    st.write(st.session_state[f'{PAGE_PREFIX}df'])
 
 # Добавляем текстовый блок с выбором направления и расстояния
 st.write("### Введите данные о ближайшей нормируемой территории")
@@ -92,7 +94,7 @@ if st.button("Сохранить таблицу и текст в Word"):
                 run.font.size = Pt(6)
     
     # Добавляем данные из DataFrame в таблицу Word
-    for index, row in st.session_state.df.iterrows():
+    for index, row in st.session_state[f'{PAGE_PREFIX}df'].iterrows():
         row_cells = table.add_row().cells
         for i, col in enumerate(columns):
             row_cells[i].text = str(row[col])
