@@ -127,10 +127,14 @@ def fill_document_into_table(num_of_boilers, fuel_type, num_of_days_in_work, num
     benzin_year = petrol_mik_warm + petrol_mik_warmup
     table.cell(row_idx, 7).text = str(benzin_sec)
     table.cell(row_idx, 8).text = str(benzin_year)
+    path_to_save = os.path.join(os.getcwd(), "calculations", "tables", "razdel2_table_filled.docx")
+    doc.save(path_to_save)
+    
 
-    doc.save(r"calculations\tables\razdel2_table_filled.docx")
-
-    doc = Document("calculations/tables/3_7.docx")
+    path = os.path.join(os.getcwd(), "calculations", "tables", "3_7.docx")
+    print(path)
+    # doc = Document("calculations/tables/3_7.docx")
+    doc = Document(path)
     table = doc.tables[0]
     table.cell(3,0).text = "0301\n 0304\n 0330\n 0337\n 0410\n 0703\n 1728\n 2704"
     table.cell(3,1).text = "Азота диоксид\n Азот (II) оксид\n Сера диоксид\n Углерода оксид\n Метан\n Бензапирен\n Бензин (нефтяной, малосернистый) /в пересчете на углерод/"
@@ -168,14 +172,17 @@ def fill_document_into_table(num_of_boilers, fuel_type, num_of_days_in_work, num
     table.cell(6,4).text = str(float( table.cell(4,4).text) - benzapiren_year)
     table.cell(6,9).text = str(float( table.cell(4,2).text) - benzapiren_year)
     
-
-    doc.save("calculations/tables/razdel3/3_7.docx")
+    path_to_save = os.path.join(os.getcwd(), "calculations", "tables", "razdel3", "3_7.docx")
+    # doc.save("calculations/tables/razdel3/3_7.docx")
+    doc.save(path_to_save)
 
 
 def generate_docx(num_of_boilers, fuel_type, num_of_days_in_work, num_of_hours_in_day_in_work, fuel_consumption_year, throughpout, tnp, txx1, txx2, L2_warmup, L1_warmup, ab, Nk, Dp, Tr, L1_warm, L2_warm, Nkv, Nkk, car, speed, num_of_days_in_work_car, num_of_hours_in_day_in_work_car, num_of_days_in_work_parking, num_of_hours_in_day_in_work_parking, num_of_parkings, num_of_days_in_work_candle, num_of_hours_in_day_in_work_candle, num_of_candles, car_amount):
     fill_document_into_table(num_of_boilers, fuel_type, num_of_days_in_work, num_of_hours_in_day_in_work, fuel_consumption_year, throughpout, tnp, txx1, txx2, L2_warmup, L1_warmup, ab, Nk, Dp, Tr, L1_warm, L2_warm, Nkv, Nkk)
     fuel_consumption_sec = int(fuel_consumption_year) * 1000 / (60 * 60 * 24 * num_of_days_in_work)
-    doc = Document(r"calculations\tables\razdel2_table_filled.docx") # docx with filled table for razdel2
+
+    path = os.path.join(os.getcwd(), "calculations", "tables", "razdel2_table_filled.docx")
+    doc = Document(path)
     table = doc.tables[0]
     column_index = -1
     total_sum = 0
@@ -209,7 +216,9 @@ def generate_docx(num_of_boilers, fuel_type, num_of_days_in_work, num_of_hours_i
 ]
     for method in LIST_OF_METHODS:
         paragraph = doc.add_paragraph(method, style='List Number')
-    doc.save("inventarization_description\izav_info\part2_without_intro.docx")
+
+    path_to_save = os.path.join(os.getcwd(), "inventarization_description", "izav_info", "part2_without_intro.docx")
+    doc.save(path_to_save)
 
     COgik_warmup, COgik_warm, CO_mik_warm, CO_mik_warmup, Gno2_warm, Gno2_warm_up, Gno_warm, Gno_warm_up, Mno2_warm, Mno_warm, Mno_warm_up, Mno2_warm_up, SOgik, SO_gik_warm, SO_mik, SO_mik_warm, petrol_gik_warm, petrol_gik_warmup, petrol_mik_warm, petrol_mik_warmup = calculate_gross_emissions(tnp, txx1, txx2, L2_warmup, L1_warmup, ab, Nk, Dp, Tr, L1_warm, L2_warm, Nkv, Nkk)
     mno2_t = calculate_Mno2_t(fuel_consumption_year=fuel_consumption_year, fuel_consumption_sec=fuel_consumption_sec)
