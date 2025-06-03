@@ -20,7 +20,7 @@ with tab1:
 
     columns_name = ["Наименование данных", "На момент разработки отчета инвентаризации"]
 
-    if 'company_df' not in st.session_state:
+    if 'company_info_df' not in st.session_state:
         rows = [
             "Полное наименование предприятия",
             "Сокращенное наименование предприятия",
@@ -39,14 +39,14 @@ with tab1:
             "Наименование данных": rows,
             "На момент разработки отчета инвентаризации": [""] * len(rows),
         }
-        st.session_state.company_df = pd.DataFrame(data)
+        st.session_state.company_info_df = pd.DataFrame(data)
 
     st.write("Введите данные в таблицу:")
-    edited_company_df = st.data_editor(st.session_state.company_df, num_rows="dynamic")
-    st.session_state.company_df = edited_company_df
+    edited_company_df = st.data_editor(st.session_state.company_info_df, num_rows="dynamic")
+    st.session_state.company_info_df = edited_company_df
 
     if st.button("Показать введённые данные о компании"):
-        st.write(st.session_state.company_df)
+        st.write(st.session_state.company_info_df)
 
 with tab2:
     st.title("Информация об организации и источниках выбросов")
@@ -163,12 +163,12 @@ def generate_full_report():
     run.bold = True
     
     # Таблица с данными компании
-    company_table = doc.add_table(rows=st.session_state.company_df.shape[0]+1, cols=2)
+    company_table = doc.add_table(rows=st.session_state.company_info_df.shape[0]+1, cols=2)
     company_table.style = 'Table Grid'
     company_table.cell(0, 0).text = "Категория"
     company_table.cell(0, 1).text = "Значение"
     
-    for i, row in st.session_state.company_df.iterrows():
+    for i, row in st.session_state.company_info_df.iterrows():
         company_table.cell(i+1, 0).text = str(row["Наименование данных"])
         company_table.cell(i+1, 1).text = str(row["На момент разработки отчета инвентаризации"])
     
