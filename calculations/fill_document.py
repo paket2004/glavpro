@@ -24,7 +24,10 @@ def fill_document_into_table(num_of_boilers, fuel_type, num_of_days_in_work, num
     
     generate_moving_desription(tnp, txx1, txx2, L2_warmup, L1_warmup, ab, Nk, Dp, Tr, L1_warm, L2_warm, Nkv, Nkk)
     generate_station_desription(tnp, txx1, txx2, L2_warmup, L1_warmup, ab, Nk, Dp, Tr, L1_warm, L2_warm, Nkv, Nkk)
-    doc = Document(r"calculations\tables\razdel2_table.docx")
+    path = os.path.join(os.getcwd(), "calculations", "tables", "razdel2_table.docx")
+    print(path)
+    # doc = Document(r"calculations\tables\razdel2_table.docx")
+    doc = Document(path)
     
     COgik_warmup, COgik_warm, CO_mik_warm, CO_mik_warmup, Gno2_warm, Gno2_warm_up, Gno_warm, Gno_warm_up, Mno2_warm, Mno_warm, Mno_warm_up, Mno2_warm_up, SOgik, SO_gik_warm, SO_mik, SO_mik_warm, petrol_gik_warm, petrol_gik_warmup, petrol_mik_warm, petrol_mik_warmup = calculate_gross_emissions(tnp, txx1, txx2, L2_warmup, L1_warmup, ab, Nk, Dp, Tr, L1_warm, L2_warm, Nkv, Nkk)
     fuel_consumption_sec = int(fuel_consumption_year) * 1000 / (60 * 60 * 24 * num_of_days_in_work)
