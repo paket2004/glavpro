@@ -2,8 +2,7 @@ import streamlit as st
 from pathlib import Path
 from io import BytesIO
 
-# Импортируй свою функцию
-from combine_docs import combine_all_docx  # замените на свой путь, если надо
+from report_combiner_docx import combine_all_docx, create_page_break_doc
 
 def main():
     st.title("Сборка итогового отчёта")
@@ -36,7 +35,7 @@ def main():
                         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                     )
                 else:
-                    st.error("Не удалось найти файл 'combined_file.docx'. Проверь путь и генерацию.")
+                    st.error("Не удалось найти файл 'combined_file.docx'")
             except Exception as e:
                 st.error(f"Произошла ошибка: {e}")
 
