@@ -251,9 +251,9 @@ def generate_full_report():
     # Сохранение документа
     if not os.path.exists("reports"):
         os.makedirs("reports")
-    file_path = "inventarization_description\punkt1\organization_sources_info.docx"
-    doc.save(file_path)
-    return file_path
+    path_to_save = os.path.join(os.getcwd(), "inventarization_description", "punkt1", "organization_sources_info.docx")
+    doc.save(path_to_save)
+    return path_to_save
 
 # Кнопка для генерации полного отчета
 if st.button("Сформировать полный отчет в DOCX"):
