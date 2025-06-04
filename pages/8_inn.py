@@ -6,7 +6,7 @@ def is_valid_inn(inn):
     """Check if the INN is a 10-digit number."""
     return bool(re.match(r'^\d{10}$', inn))
 
-st.title("Получение выписки ЕГРЮЛ")
+st.title("Получение выписки ЕГРЮЛ. ПОКА НЕ РАБОТАЕТ, НЕ НАДО ТУТ НИЧЕГО ПИСАТЬ")
 inn = st.text_input("Введите ИНН вашей компании (10 цифр)")
 
 
