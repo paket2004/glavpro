@@ -22,6 +22,7 @@ def combine_all_docx(filename_master, files_list):
     composer.append(create_page_break_doc())
 
     for i, file_path in enumerate(files_list):
+        print(file_path)
         doc_temp = Document_compose(file_path)
         composer.append(doc_temp)
 
