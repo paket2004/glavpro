@@ -1,5 +1,4 @@
 import streamlit as st
-
 from intro import generate_introduction 
 
 def main():
@@ -11,5 +10,6 @@ def main():
     if st.button("Сгенерировать введение"):
         if generate_introduction(orgnization_name) == 0:
             st.success("Документ успешно сгенерирован!")
+            
 if __name__ == "__main__":
     main()
