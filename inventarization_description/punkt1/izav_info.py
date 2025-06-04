@@ -12,7 +12,7 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.shared import RGBColor
 from gross_emissions.gross_emission_lists_for_different_source import car, boiler_pipe, blow_off_plug
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-# Настройка вкладок
+
 tab1, tab2 = st.tabs(["Информация о компании", "Источники выбросов"])
 
 with tab1:
@@ -251,9 +251,9 @@ def generate_full_report():
     # Сохранение документа
     if not os.path.exists("reports"):
         os.makedirs("reports")
-    file_path = "inventarization_description\punkt1\organization_sources_info.docx"
-    doc.save(file_path)
-    return file_path
+    path_to_save = os.path.join(os.getcwd(), "inventarization_description", "punkt1", "organization_sources_info.docx")
+    doc.save(path_to_save)
+    return path_to_save
 
 # Кнопка для генерации полного отчета
 if st.button("Сформировать полный отчет в DOCX"):

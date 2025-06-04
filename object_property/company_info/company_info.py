@@ -98,7 +98,7 @@ if st.button("Создать новую таблицу"):
     # Экспорт новой таблицы в CSV
     # csv = new_df.to_csv(index=False, encoding='utf-8-sig').encode('utf-8')
     new_df.to_excel("новая_таблица.xlsx", index=False)
-    # Скачиваем Excel-файл
+    # Скачиваем Excel-файлы
     with open("новая_таблица.xlsx", "rb") as file:
         st.download_button(
             label="Скачать новую таблицу как Excel",

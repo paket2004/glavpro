@@ -1,6 +1,5 @@
 from docxcompose.composer import Composer
 from docx import Document as Document_compose
-from docx import Document
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 

@@ -20,9 +20,7 @@ def main():
                     "inventarization_description/izav_info/razdel2.docx",
                     "calculations/tables/razdel3/razdel3.docx"
                 ]
-
                 combine_all_docx(filename_master, files_to_merge)
-
                 output_path = Path("combined_file.docx")
                 if output_path.exists():
                     with open(output_path, "rb") as f:

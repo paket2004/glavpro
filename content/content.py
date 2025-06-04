@@ -6,16 +6,14 @@ from docx.enum.section import WD_ORIENTATION
 # Создаем новый документ
 doc = Document()
 
-# Устанавливаем альбомную ориентацию для всех разделов документа
 for section in doc.sections:
     section.orientation = WD_ORIENTATION.LANDSCAPE
-    section.page_width = Inches(11.69)  # Альбомный A4
+    section.page_width = Inches(11.69)
     section.page_height = Inches(8.27)
-    # Настраиваем поля (левое, правое, верхнее, нижнее)
-    section.left_margin = Inches(1.5)    # ~1.27 см
-    section.right_margin = Inches(0.4)  # ~1.27 см
-    section.top_margin = Inches(0.95)     # ~1.27 см
-    section.bottom_margin = Inches(0.95)  # ~1.27 см
+    section.left_margin = Inches(1.5)
+    section.right_margin = Inches(0.4)
+    section.top_margin = Inches(0.95)
+    section.bottom_margin = Inches(0.95)
 
 # Добавляем заголовок
 heading = doc.add_heading('СОДЕРЖАНИЕ', level=1)
@@ -25,20 +23,16 @@ run.font.color.rgb = RGBColor(0, 0, 0)  # Черный цвет
 run.font.name = 'Times New Roman'
 run.font.size = Pt(8)
 
-# Создаем таблицу с содержанием
 table = doc.add_table(rows=1, cols=3)
 table.style = 'Table Grid'
 style = doc.styles['Normal']
 style.font.name = 'Times New Roman'
 style.font.size = Pt(8)
-
-# Заголовки столбцов
 hdr_cells = table.rows[0].cells
 hdr_cells[0].text = '№'
 hdr_cells[1].text = 'Перечень основных разделов отчета по инвентаризации выбросов'
 hdr_cells[2].text = 'с.'
 
-# Данные для таблицы
 content = [
     ("1", "Введение", "5"),
     ("2", "1. Сведения о хозяйствующем субъекте, объекте ОНВ, его отдельных территориях и производственной деятельности, включая сведения о количестве, характеристиках и эффективности ГОУ", "7"),
@@ -65,7 +59,6 @@ for row in content:
     row_cells[1].text = row[1]
     row_cells[2].text = row[2]
 
-# Объединение ячеек
 table.cell(4, 0).merge(table.cell(10, 0))
 table.cell(10, 0).text = "4\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n5"
 table.cell(11, 0).merge(table.cell(16, 0))
