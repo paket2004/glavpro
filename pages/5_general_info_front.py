@@ -9,8 +9,8 @@ st.title("Добавление источников выбросов и сохр
 work_area = st.text_input("Введите основной вид деятельности вашего предприятия")
 organization_name = st.text_input("Введите название вашей организации")
 # Инициализация состояния
-if "sources" not in st.session_state:
-    st.session_state.sources = []
+if "sources_general_info" not in st.session_state:
+    st.session_state.sources_general_info = []
 if "next_org" not in st.session_state:
     st.session_state.next_org = 1  # 0001, 0002...
 if "next_unorg" not in st.session_state:
@@ -31,7 +31,7 @@ name = st.text_input("Название источника")
 
 if st.button("Добавить источник"):
     if name:
-        st.session_state.sources.append({"number": number, "name": name, "category": category})
+        st.session_state.sources_general_info.append({"number": number, "name": name, "category": category})
         if category == "Организованный":
             st.session_state.next_org += 1
         else:
@@ -40,13 +40,13 @@ if st.button("Добавить источник"):
         st.warning("Введите название источника!")
 
 # Вывод списка источников
-if st.session_state.sources:
+if st.session_state.sources_general_info:
     st.subheader("Список источников выбросов:")
     
-    organized = [s for s in st.session_state.sources if s["category"] == "Организованный"]
-    unorganized = [s for s in st.session_state.sources if s["category"] == "Неорганизованный"]
+    organized = [s for s in st.session_state.sources_general_info if s["category"] == "Организованный"]
+    unorganized = [s for s in st.session_state.sources_general_info if s["category"] == "Неорганизованный"]
 
-    st.markdown(f"**Всего на предприятии {len(st.session_state.sources)} источника выбросов:**")
+    st.markdown(f"**Всего на предприятии {len(st.session_state.sources_general_info)} источника выбросов:**")
 
     if organized:
         st.markdown(f"*Организованные источники ({len(organized)} шт.):*")
@@ -90,8 +90,8 @@ def generate(sources):
 
 # Кнопка для сохранения в DOCX
 if st.button("Сохранить в DOCX"):
-    if st.session_state.sources:
-        file_path = generate(st.session_state.sources)
+    if st.session_state.sources_general_info:
+        file_path = generate(st.session_state.sources_general_info)
         with open(file_path, "rb") as f:
             st.download_button("Скачать DOCX", f, file_name="Источники_выбросов.docx")
     else:
@@ -99,7 +99,7 @@ if st.button("Сохранить в DOCX"):
 
 # Кнопка для очистки списка
 if st.button("Очистить список"):
-    st.session_state.sources = []
+    st.session_state.sources_general_info = []
     st.session_state.next_org = 1
     st.session_state.next_unorg = 6001
     st.experimental_rerun()
