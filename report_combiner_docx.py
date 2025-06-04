@@ -36,8 +36,8 @@ def combine_all_docx(filename_master, files_list):
 
 files_to_merge = [
     "termins_and_short/dictionary_table.docx",
-    "mount/src/glavpro/introduction/introduction.docx",
-    "mount/src/glavpro/inventarization_description\punkt1\organization_sources_info.docx",
+    "introduction/introduction.docx",
+    "inventarization_description/punkt1/organization_sources_info.docx",
     "object_property\sanitary_zone\sanitary_zone.docx",
     r"inventarization_description\izav_info\razdel2.docx",
     r"calculations\tables\razdel3\razdel3.docx"
