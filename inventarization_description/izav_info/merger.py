@@ -1,6 +1,5 @@
 from docxcompose.composer import Composer
 from docx import Document as Document_compose
-from docx import Document
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 
@@ -19,10 +18,8 @@ def combine_all_docx(filename_master,files_list):
     for i in range(0, number_of_sections):
         doc_temp = Document_compose(files_list[i])
         composer.append(doc_temp)
-        # if i < len(files_list) - 1:
-        #     add_page_break(composer.doc)
         
-    composer.save(r"inventarization_description\izav_info\razdel2.docx")
+    composer.save(r"inventarization_description/izav_info/razdel2.docx")
 
 filename_master = "inventarization_description/izav_info/description.docx"
 files_to_merge = [
