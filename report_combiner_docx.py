@@ -38,9 +38,9 @@ files_to_merge = [
     "termins_and_short/dictionary_table.docx",
     "introduction/introduction.docx",
     "inventarization_description/punkt1/organization_sources_info.docx",
-    "object_property\sanitary_zone\sanitary_zone.docx",
-    r"inventarization_description\izav_info\razdel2.docx",
-    r"calculations\tables\razdel3\razdel3.docx"
+    "object_property/sanitary_zone/sanitary_zone.docx",
+    r"inventarization_description/izav_info/razdel2.docx",
+    r"calculations/tables/razdel3/razdel3.docx"
 ]
 # filename_master="report.docx"
 filename_master="content/Содержание_отчета.docx"
