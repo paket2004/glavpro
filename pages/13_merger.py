@@ -4,6 +4,7 @@ from docx import Document
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 import streamlit as st
+import os
 
 def add_page_break(doc):
     """Inserts a page break into the document."""
@@ -38,3 +39,43 @@ def merge_san_zone():
         files_list=["object_property/dust_and_gas/dust_and_gus_info.docx", "object_property/previous_inventarization/prev_inv_info.docx"],
         output_path="object_property\sanitary_zone\sanitary_zone.docx"
     )
+
+def merge_all_documents():
+    """Главная функция для объединения всех документов"""
+    results = []
+    
+    with st.status("Объединение документов...", expanded=True) as status:
+        st.write("Объединяем раздел 'izav_info'...")
+        results.append(merge_izav_info())
+        
+        st.write("Объединяем раздел 'sanitary_zone'...")
+        results.append(merge_san_zone())
+        
+        
+        if all(results):
+            status.update(label="Все документы успешно объединены!", state="complete")
+            return True
+        else:
+            status.update(label="Объединение завершено с ошибками", state="error")
+            return False
+
+st.title("📄 Система объединения документов")
+
+if st.button("Объединить все документы", type="primary"):
+    if merge_all_documents():
+        # Создаем список объединенных файлов для скачивания
+        merged_files = [
+            "inventarization_description/izav_info/razdel2.docx",
+            "object_property/sanitary_zone/sanitary_zone.docx"
+        ]
+        
+        # Показываем кнопки для скачивания каждого файла
+        for file_path in merged_files:
+            if os.path.exists(file_path):
+                with open(file_path, "rb") as f:
+                    st.download_button(
+                        label=f"⬇️ Скачать {os.path.basename(file_path)}",
+                        data=f,
+                        file_name=os.path.basename(file_path),
+                        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    )
