@@ -5,7 +5,7 @@ from io import BytesIO
 import os
 
 def main():
-    st.title("Генерация определений по терминам. ТУТ ВПН НАДО, и, пожалуйста, не вводите последний термин, он всё ломает. я это исправлю")
+    st.title("Генерация определений по терминам. ТУТ ВПН НАДО")
     st.write("Введите термины, используемые в проекте (один термин на строку):")
     termins_input = st.text_area("Термины", height=150)
     # Split the input into a list of terms (one per line)

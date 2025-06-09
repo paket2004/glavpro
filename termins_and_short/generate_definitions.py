@@ -4,9 +4,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 import os
 from docx.shared import Pt, RGBColor
 from docx import Document
-
 import re
-
 from termins_and_short.generate_short import shorcuts_list
 # from generate_short import shorcuts_list
 
@@ -63,16 +61,20 @@ def generate_response(termins: str, shortcuts: dict):
             }
         ]
     )
+    
     answers = completion.choices[0].message
-
+    print(answers)
+    if not hasattr(answers, 'content') or not answers.content.strip():
+        raise ValueError("Ответ от OpenAI пустой или некорректный")
 
     # Use regex to extract term-answer pairs
-    pattern = r"input: (.*?)\s*answer: (.*?)(?=\ninput: |\Z)"
+    # pattern = r"input: (.*?)\s*answer: (.*?)(?=\ninput: |\Z)"
+    pattern = r"input:\s*(.*?)\s*answer:\s*(.*?)(?=\ninput:|\Z)"
     matches = re.findall(pattern, answers.content, re.DOTALL)
-
+    print(f"matches: {matches}")
     # Store the results in a dictionary
     results = {term.strip(): answer.strip() for term, answer in matches}
-    print(results.keys())
+    print(f"results: {results.keys()}")
 
 
     doc = Document()
