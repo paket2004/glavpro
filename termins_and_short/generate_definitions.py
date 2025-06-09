@@ -6,6 +6,7 @@ from docx.shared import Pt, RGBColor
 from docx import Document
 import re
 from termins_and_short.generate_short import shorcuts_list
+import json
 # from generate_short import shorcuts_list
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -38,62 +39,58 @@ def add_shortcuts_to_doc(doc, shortcuts_cur, shorcuts_list):
 
 
 def generate_response(termins: str, shortcuts: dict):
-    # ТУТ БЫ В БУДУЩЕМ ПРОВЕРКУ ОТ ЛЛМКИ НА ОПЕЧАТКУ И РЕГЕКСПЫ НА ТО, ЧТО НАПИСАНО ЧТО-ТО АДЕКВАТНОЕ
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant and your aim is to write a inventarization report for the company. Do not write abstract text, it should be very human written text."},
+            {"role": "system", "content": "You are a helpful assistant and your aim is to write an inventarization report for the company. Do not write abstract text, it should be very human written text."},
             {
                 "role": "user",
-                "content": f"""provide definitions on Russian language for stated words. Do this for these termins: {termins}.
-                Examples: 
-                
-                input: история
-                answer:  наука, научная (академическая) дисциплина, предметом изучения которой является человеческое прошлое; историческая наука использует исторические источники, включая различные нарративы, письменные документы, устные сообщения, материальные артефакты, лингвистические данные, а также экологические маркеры, для описания и исследования человеческого прошлого и причинно-следственных связей исторических событий и фактов, конкретные проявления и закономерности исторического процесса, развитие социума и любую человеческую деятельность.
-                
-                input: магнат
-                answer: дворянин или человек, занимающий высокое социальное положение, по рождению (происхождению), богатству или другим качествам.
+                "content": f"""Дай определения на русском языке для следующих терминов: {termins}.
+Ответ верни строго в формате JSON, где:
+- ключ — это термин (включая всё, что в скобках, с запятыми и т.п.)
+- значение — определение этого термина.
 
-                input: раздел
+Пример:
+{{
+  "история": "наука, изучающая человеческое прошлое...",
+  "Очистка газа (воздуха), пылегазоочистка": "Процессы удаления загрязнений..."
+}}
 
-                answer: рубрикационная часть произведения или издания. В произведении раздел объединяет несколько глав. Несколько разделов, в свою очередь, могут образовать часть или книгу. В издании в раздел могут быть объединены несколько произведений.
-                    """
+Не добавляй никакого текста до или после JSON. Только JSON.
+"""
             }
         ]
     )
-    
-    answers = completion.choices[0].message
-    print(answers)
-    if not hasattr(answers, 'content') or not answers.content.strip():
-        raise ValueError("Ответ от OpenAI пустой или некорректный")
 
-    # Use regex to extract term-answer pairs
-    # pattern = r"input: (.*?)\s*answer: (.*?)(?=\ninput: |\Z)"
-    pattern = r"input:\s*(.*?)\s*answer:\s*(.*?)(?=\ninput:|\Z)"
-    matches = re.findall(pattern, answers.content, re.DOTALL)
-    print(f"matches: {matches}")
-    # Store the results in a dictionary
-    results = {term.strip(): answer.strip() for term, answer in matches}
-    print(f"results: {results.keys()}")
+    response = completion.choices[0].message.content.strip()
 
+    try:
+        results = json.loads(response)
+    except json.JSONDecodeError as e:
+        print("❌ Ошибка JSON:", e)
+        print("Ответ от модели:\n", response)
+        results = {}
 
+    if not results:
+        raise ValueError("Ответ от OpenAI пустой или нераспарсенный — проверь формат или термины.")
+
+    # Генерация DOCX
     doc = Document()
     style = doc.styles['Normal']
     style.font.name = 'Times New Roman'
+
     heading = doc.add_heading(level=1)
     heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run = heading.add_run('Основные термины, используемые в проекте')
-    run = heading.runs[0]
-    run.font.color.rgb = RGBColor(0, 0, 0)  # Black color
+    run.font.color.rgb = RGBColor(0, 0, 0)
     run.font.name = 'Times New Roman'
     run.font.size = Pt(8)
+
     table = doc.add_table(rows=len(results), cols=2)
     table.style = 'Table Grid'
-    # Populate the table with dictionary keys and values
+
     for i, (key, value) in enumerate(results.items()):
-        # Add key to the first column
         table.cell(i, 0).text = str(key)
-        # Add value to the second column
         table.cell(i, 1).text = str(value)
 
     for row in table.rows:
@@ -102,9 +99,9 @@ def generate_response(termins: str, shortcuts: dict):
                 for run in paragraph.runs:
                     run.font.size = Pt(6)
 
-    # Добавляем сокращения в документ
     if shortcuts:
         add_shortcuts_to_doc(doc, shortcuts, shorcuts_list)
+
     doc.save('termins_and_short/dictionary_table.docx')
     
 
