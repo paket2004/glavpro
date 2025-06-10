@@ -26,17 +26,30 @@ if f'{PAGE_PREFIX}df' not in st.session_state:
 
 # Отображаем редактируемую таблицу
 st.write("Введите данные в таблицу:")
+
 edited_df = st.data_editor(
     st.session_state[f'{PAGE_PREFIX}df'],
     num_rows="dynamic",
     key=f'{PAGE_PREFIX}editor'
 )
-st.session_state[f'{PAGE_PREFIX}df'] = edited_df
 
-# Кнопка для вывода данных
-if st.button("Показать введённые данные"):
-    st.write("Введённые данные:")
-    st.write(st.session_state[f'{PAGE_PREFIX}df'])
+# st.session_state[f'{PAGE_PREFIX}df'] = edited_df
+st.session_state.edited_df1 = edited_df
+
+
+# if st.button("Сохранить изменения"):
+#     st.session_state[f'{PAGE_PREFIX}df'] = edited_df
+#     st.session_state[f'{PAGE_PREFIX}saved'] = True
+#     st.success("Изменения сохранены!")
+if st.button("💾 Сохранить изменения"):
+    st.session_state[f'{PAGE_PREFIX}original_df'] = edited_df.copy()
+    st.session_state[f'{PAGE_PREFIX}saved'] = True
+    st.success("✅ Изменения успешно сохранены!")
+
+# Показываем таблицу только если уже сохраняли
+if st.session_state.get(f'{PAGE_PREFIX}saved', False):
+    st.write("### Сохранённая таблица:")
+    st.dataframe(st.session_state.edited_df1)
 
 # Добавляем текстовый блок с выбором направления и расстояния
 st.write("### Введите данные о ближайшей нормируемой территории")
@@ -79,21 +92,16 @@ if st.button("Сохранить таблицу и текст в Word"):
     run.font.name = 'Times New Roman'
     run.font.size = Pt(6)
 
-    # Создаём таблицу в Word
     table = doc.add_table(rows=1, cols=len(columns))
     table.style = 'Table Grid'
-    # Добавляем заголовки столбцов
-    # Добавляем заголовки столбцов и устанавливаем шрифт
     hdr_cells = table.rows[0].cells
     for i, col in enumerate(columns):
         hdr_cells[i].text = col
-        # Устанавливаем шрифт для заголовков
         for paragraph in hdr_cells[i].paragraphs:
             for run in paragraph.runs:
                 run.font.name = 'Times New Roman'
                 run.font.size = Pt(6)
     
-    # Добавляем данные из DataFrame в таблицу Word
     for index, row in st.session_state[f'{PAGE_PREFIX}df'].iterrows():
         row_cells = table.add_row().cells
         for i, col in enumerate(columns):
@@ -121,8 +129,6 @@ if st.button("Сохранить таблицу и текст в Word"):
         промышленные объекты и производства пятого класса - 50 м.
         Санитарно-эпидемиологические правила и нормативы СанПиН 2.2.1/2.1.1.1200-03 «Санитарно-защитные зоны и санитарная классификация предприятий, сооружений и иных объектов» (утв. постановлением Главного государственного санитарного врача РФ от 25 сентября 2007 г. N 74) с изменениями и дополнениями от 10 апреля 2008 г., 6 октября 2009 г., 9 сентября 2010 г., 25 апреля 2014 г., 28 февраля 2022 г.:
 """
-    # Сохраняем документ
-    # doc.add_paragraph(text)
     paragraph = doc.add_paragraph()
     run = paragraph.add_run(text)
     run.font.name = 'Times New Roman'
@@ -131,28 +137,23 @@ if st.button("Сохранить таблицу и текст в Word"):
     table = doc.add_table(rows=3, cols=6)
     table.style = 'Table Grid'
 
-    # Заполняем заголовок
-    table.cell(0, 0).merge(table.cell(0, 2))  # Объединение 1-3 колонок
-    table.cell(0, 3).merge(table.cell(0, 4))  # Объединение 4-5 колонок
+    table.cell(0, 0).merge(table.cell(0, 2))
+    table.cell(0, 3).merge(table.cell(0, 4))
 
     table.cell(0, 0).text = "СанПиН 2.2.1/2.1.1.1200-03"
     table.cell(0, 3).text = "Характер производства"
     table.cell(0, 5).text = "Нормативный размер СЗЗ"
 
-    # Вторая строка заголовка
     table.cell(1, 0).text = "Раздел*"
     table.cell(1, 1).text = "класс опасности"
     table.cell(1, 2).text = "пункт"
-    table.cell(1, 3).merge(table.cell(1, 4))  # Объединение 4-5 колонок
+    table.cell(1, 3).merge(table.cell(1, 4))
 
-    # Третья строка с содержимым
-    table.cell(2, 0).merge(table.cell(2, 5))  # Объединение 1-3 колонок
+    table.cell(2, 0).merge(table.cell(2, 5)) 
     table.cell(2, 0).text = ("Для собственных котельных тепловой мощностью менее 200 Гкал, "
                             "работающих на твердом, жидком и газообразном топливе, "
                             "размер санитарно-защитной зоны не устанавливается.")
-    # table.cell(2, 0).merge(table.cell(2, 5))  # Объединение 1-3 колонок
 
-    # Настройка размера шрифта
     for row in table.rows:
         for cell in row.cells:
             for paragraph in cell.paragraphs:

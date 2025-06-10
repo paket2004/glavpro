@@ -3,8 +3,7 @@ import pandas as pd
 from docx import Document
 from docx import Document
 from docx.shared import Inches
-from docx.oxml.ns import qn
-from docx.enum.section import WD_ORIENT, WD_SECTION
+from docx.enum.section import WD_ORIENT
 from docx.shared import Inches, Pt
 from docx.shared import Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -91,7 +90,6 @@ edited_df = st.data_editor(
         "Скорость выхода ГВС, м/с (фактическая/осреднённая)": st.column_config.NumberColumn(format="%.2f"),
         "Температура ГВС °C осреднённая": st.column_config.NumberColumn(format="%.1f"),
         "Плотность ГВС, кг/м3": st.column_config.NumberColumn(format="%.2f"),
-        # "Концентрация мг/м3": st.column_config.NumberColumn(format="%.4f"),
         "Концентрация мг/м3": st.column_config.TextColumn(),
         "Мощность выброса, г/с": st.column_config.TextColumn(),
         "Суммарные годовые (валовые) выбросы режима (стадии) ИЗАВ, т/год": st.column_config.TextColumn(),
@@ -101,55 +99,46 @@ edited_df = st.data_editor(
 )
 
 # Сохраняем изменения в session_state
-st.session_state.df_emissions = edited_df
+st.session_state.df_emissions1 = edited_df
 
 # Кнопка для вывода данных
 if st.button("Показать введённые данные"):
     st.write("Введённые данные об источниках выбросов:")
-    st.dataframe(st.session_state.df_emissions)
+    st.dataframe(st.session_state.df_emissions1)
 
 # Кнопка для сохранения таблицы в Word
 if st.button("Сохранить таблицу в Word"):
-    # Создаём новый документ Word
     doc = Document()
     style = doc.styles['Normal']
-    style.font.name = 'Times New Roman'  # Название шрифта
-    style.font.size = Pt(4)  # Размер шрифта (12 пунктов)
-    # Добавляем заголовок
+    style.font.name = 'Times New Roman'
+    style.font.size = Pt(4)
     heading = doc.add_heading(level=1)
     run = heading.add_run("Стационарные источники выбросов загрязняющих веществ")
     heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run.font.color.rgb = RGBColor(0,0,0)
-    run.font.name = 'Times New Roman'  # This is the key line you're missing
+    run.font.name = 'Times New Roman'
     run.font.size = Pt(8)
     section = doc.sections[0]
     section.orientation = WD_ORIENT.LANDSCAPE
-    section.page_width = Inches(13.5)  # Landscape width (11 inches)
-    section.page_height = Inches(10)  # Landscape height (8.5 inches)
-    # Создаём таблицу в Word
+    section.page_width = Inches(13.5)
+    section.page_height = Inches(10)
     table = doc.add_table(rows=1, cols=len(columns))
     table.style = 'Table Grid'
-    # table.columns[3].width = Inches(0.5)
-    # Добавляем заголовки столбцов
     hdr_cells = table.rows[0].cells
     for i, col in enumerate(columns):
         hdr_cells[i].text = col
      
-    for index, row in st.session_state.df_emissions.iterrows():
+    for index, row in st.session_state.df_emissions1.iterrows():
         row_cells = table.add_row().cells
         for i, col in enumerate(columns):
             cell_value = row[col]
             
             if isinstance(cell_value, list):
-                # Handle list-type data (e.g., ["0.35", "7.51"])
                 row_cells[i].text = "\n".join(map(str, cell_value))
             elif pd.isna(cell_value):
-                # Handle NaN/empty values
                 row_cells[i].text = ""
             else:
-                # Handle regular values (numbers, strings)
                 row_cells[i].text = str(cell_value)
-    # Сохраняем документ
     font_size = Pt(4)
     for row in table.rows:
         for cell in row.cells:
@@ -157,11 +146,9 @@ if st.button("Сохранить таблицу в Word"):
                 for run in paragraph.runs:
                     run.font.size = font_size
     for row in table.rows:
-        row.cells[0].width = Inches(1.0)  # Узкая колонка
-        row.cells[1].width = Inches(1.0)  # Широкая колонка
-        row.cells[2].width = Inches(1.0)  # Очень узкая
-    # for cell in table.columns[0].cells:
-    #     cell.width = Inches(2)
+        row.cells[0].width = Inches(1.0)
+        row.cells[1].width = Inches(1.0)
+        row.cells[2].width = Inches(1.0)
     doc.save("calculations/tables/razdel3/3_2.docx")
     st.success("Таблица успешно сохранена в файл emission_sources_table.docx")
 

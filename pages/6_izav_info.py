@@ -43,10 +43,10 @@ with tab1:
 
     st.write("Введите данные в таблицу:")
     edited_company_df = st.data_editor(st.session_state.company_info_df, num_rows="dynamic")
-    st.session_state.company_info_df = edited_company_df
+    st.session_state.company_info_df1 = edited_company_df
 
     if st.button("Показать введённые данные о компании"):
-        st.write(st.session_state.company_info_df)
+        st.write(st.session_state.company_info_df1)
 
 with tab2:
     st.title("Информация об организации и источниках выбросов")
@@ -163,7 +163,7 @@ def generate_full_report():
     run.bold = True
     
     # Таблица с данными компании
-    company_table = doc.add_table(rows=st.session_state.company_info_df.shape[0]+1, cols=2)
+    company_table = doc.add_table(rows=st.session_state.company_info_df1.shape[0]+1, cols=2)
     company_table.style = 'Table Grid'
     company_table.cell(0, 0).text = "Категория"
     company_table.cell(0, 1).text = "Значение"
