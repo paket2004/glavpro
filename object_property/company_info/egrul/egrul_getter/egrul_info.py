@@ -29,10 +29,11 @@ def create_driver(download_dir):
     }
     chrome_options.add_experimental_option("prefs", prefs)
 
-    chrome_options.binary_location = "/usr/bin/chromium"
+    # chrome_options.binary_location = "/usr/bin/chromium"
 
     print("🔄 Запускаем браузер...")
-    driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=chrome_options)
+    # driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=chrome_options)
+    driver = webdriver.Chrome(options=chrome_options)
     print("✅ Драйвер готов")
     return driver
 

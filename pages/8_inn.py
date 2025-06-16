@@ -11,7 +11,12 @@ inn = st.text_input("Введите ИНН вашей компании (10 ци�
 
 
 if st.button("Получить выписку"):
-    if is_valid_inn(inn):
+    try:
         egrul_info.get_statement(inn)
-    else:
-        st.error("Некорректный ИНН. Введите 10 цифр.")
+        st.success("Запрос выполнен!")
+    except Exception as e:
+        st.error(f"Ошибка: {str(e)}")
+    # if is_valid_inn(inn):
+    #     egrul_info.get_statement(inn)
+    # else:
+    #     st.error("Некорректный ИНН. Введите 10 цифр.")
